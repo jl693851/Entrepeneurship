@@ -20,7 +20,7 @@
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px}
   h2{font-size:1.15rem;margin:0 0 12px}
   label{font-weight:600;display:block;margin:12px 0 6px}
-  textarea,select,input[type="text"],input[type="password"]{width:100%;font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+  textarea,select{width:100%;font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff}
   textarea{min-height:110px;resize:vertical}
   .hint{font-size:.88rem;color:var(--muted);margin-top:4px}
   button.primary{background:var(--accent);color:#fff;border:0;padding:11px 18px;border-radius:8px;font:inherit;font-weight:600;cursor:pointer;margin-top:16px}
@@ -50,8 +50,6 @@
   .status-msg{margin-top:12px;padding:10px 12px;border-radius:8px;font-size:.92rem;display:none}
   .status-ok{display:block;background:#e8f5ee;border-left:3px solid var(--low);color:#1b4d30}
   .status-err{display:block;background:#fdecea;border-left:3px solid var(--crit);color:#7a0e20}
-  details.gh-cfg{margin-top:14px;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#faf9f7}
-  details.gh-cfg summary{cursor:pointer;font-weight:600;font-size:.9rem;color:var(--muted)}
   footer{margin-top:32px;font-size:.8rem;color:var(--muted);text-align:center}
   .hidden{display:none}
 </style>
@@ -112,7 +110,7 @@
       <!-- FEEDBACK CARD -->
       <div class="card" id="feedback-card">
         <h2>Test feedback (for our prototype evaluation)</h2>
-        <p class="hint">Help us improve Critical Colleague. Your feedback is saved directly to <code>feedback.csv</code> in our GitHub repository (or exported as CSV).</p>
+        <p class="hint">Help us improve Critical Colleague by sharing a quick reaction to your check.</p>
 
         <div class="fb-grid">
           <div>
@@ -139,33 +137,7 @@
         <label for="fbComment">What felt realistic, annoying, or missing?</label>
         <textarea id="fbComment" style="min-height:80px" placeholder="e.g. Question 2 made me realize I don't verify citations, or the rating felt too strict..."></textarea>
 
-        <details class="gh-cfg">
-          <summary>GitHub Repo Connection (saves directly to feedback.csv)</summary>
-          <div class="hint" style="margin-bottom:8px">Enter your repository details once (stored locally in your browser). Never commit a Personal Access Token into public code!</div>
-          <div class="fb-grid">
-            <div>
-              <label for="ghOwner">GitHub Owner / Username</label>
-              <input type="text" id="ghOwner" placeholder="e.g. janlippinghof">
-            </div>
-            <div>
-              <label for="ghRepo">Repository Name</label>
-              <input type="text" id="ghRepo" placeholder="e.g. entrepreneurship">
-            </div>
-          </div>
-          <div class="fb-grid">
-            <div>
-              <label for="ghPath">CSV File Path in Repo</label>
-              <input type="text" id="ghPath" value="feedback.csv">
-            </div>
-            <div>
-              <label for="ghToken">Fine-grained GitHub Token (Contents: Read &amp; Write)</label>
-              <input type="password" id="ghToken" placeholder="github_pat_...">
-            </div>
-          </div>
-        </details>
-
-        <button type="button" class="primary" id="submitFb">Save feedback to GitHub (feedback.csv)</button>
-        <button type="button" class="ghost" id="downloadCsv">Download CSV row locally</button>
+        <button type="button" class="primary" id="submitFb">Submit feedback</button>
         <div class="status-msg" id="fbStatus"></div>
       </div>
     </div>
@@ -200,7 +172,7 @@
     </div>
   </section>
 
-  <footer>Prototype v0.2 &middot; Created with AI assistance (Claude Opus 5.5, Anthropic) &middot; Review before use.</footer>
+  <footer>Prototype v0.3 &middot; Created with AI assistance (Claude Opus 5.5, Anthropic) &middot; Review before use.</footer>
 </main>
 
 <script>
@@ -285,6 +257,7 @@ var LEVELS = [
 ];
 
 var idx=0, answers=[], reasons=[], planText="", stakes=2, lastResult=null;
+var ghCfg = {owner:"", repo:"", path:"feedback.csv", token:""};
 function $(id){ return document.getElementById(id); }
 
 document.querySelectorAll(".tab").forEach(function(t){
@@ -410,6 +383,7 @@ function showResult(){
   $("fbStatus").className = "status-msg";
   $("fbStatus").textContent = "";
   $("submitFb").disabled = false;
+  $("submitFb").textContent = "Submit feedback";
   window.scrollTo(0,0);
 }
 
@@ -455,10 +429,11 @@ function buildCsvRow(){
 (function initGhConfig(){
   var params = new URLSearchParams(window.location.search);
   ["owner","repo","path","token"].forEach(function(k){
-    var el = $("gh" + k.charAt(0).toUpperCase() + k.slice(1));
-    var saved = params.get("gh_" + k) || localStorage.getItem("cc_gh_" + k);
-    if(saved) el.value = saved;
-    el.addEventListener("change", function(){ localStorage.setItem("cc_gh_" + k, el.value.trim()); });
+    var val = params.get("gh_" + k) || localStorage.getItem("cc_gh_" + k);
+    if(val){
+      ghCfg[k] = val.trim();
+      localStorage.setItem("cc_gh_" + k, ghCfg[k]);
+    }
   });
 })();
 
@@ -468,39 +443,19 @@ function setFbStatus(msg, ok){
   el.className = "status-msg " + (ok ? "status-ok" : "status-err");
 }
 
-$("downloadCsv").onclick = function(){
-  var content = [CSV_HEADER, buildCsvRow(), ""].join(NL);
-  var blob = new Blob([content], {type:"text/csv;charset=utf-8;"});
-  var a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "critical-colleague-feedback-" + new Date().toISOString().slice(0,10) + ".csv";
-  a.click();
-};
-
 $("submitFb").onclick = async function(){
-  var owner = $("ghOwner").value.trim();
-  var repo = $("ghRepo").value.trim();
-  var path = $("ghPath").value.trim() || "feedback.csv";
-  var token = $("ghToken").value.trim();
-
-  if(!owner || !repo || !token){
-    document.querySelector("details.gh-cfg").open = true;
-    setFbStatus("Please fill in GitHub Owner, Repository Name, and Token in the 'GitHub Repo Connection' section above (or use 'Download CSV row locally').", false);
+  if(!ghCfg.owner || !ghCfg.repo || !ghCfg.token){
+    setFbStatus("Feedback submission is not configured for this link.", false);
     return;
   }
 
-  localStorage.setItem("cc_gh_owner", owner);
-  localStorage.setItem("cc_gh_repo", repo);
-  localStorage.setItem("cc_gh_path", path);
-  localStorage.setItem("cc_gh_token", token);
-
   var btn = $("submitFb");
   btn.disabled = true;
-  btn.textContent = "Saving to GitHub...";
+  btn.textContent = "Submitting...";
 
-  var apiUrl = "https://api.github.com/repos/" + encodeURIComponent(owner) + "/" + encodeURIComponent(repo) + "/contents/" + path.split("/").map(encodeURIComponent).join("/");
+  var apiUrl = "https://api.github.com/repos/" + encodeURIComponent(ghCfg.owner) + "/" + encodeURIComponent(ghCfg.repo) + "/contents/" + ghCfg.path.split("/").map(encodeURIComponent).join("/");
   var headers = {
-    "Authorization": "Bearer " + token,
+    "Authorization": "Bearer " + ghCfg.token,
     "Accept": "application/vnd.github+json",
     "Content-Type": "application/json"
   };
@@ -518,7 +473,7 @@ $("submitFb").onclick = async function(){
       existingContent = new TextDecoder().decode(bytes);
     } else if(getRes.status !== 404){
       var err = await getRes.json().catch(function(){ return {}; });
-      throw new Error(err.message || ("GitHub GET failed (" + getRes.status + ")"));
+      throw new Error(err.message || ("Request failed (" + getRes.status + ")"));
     }
 
     var row = buildCsvRow();
@@ -545,15 +500,15 @@ $("submitFb").onclick = async function(){
 
     if(!putRes.ok){
       var errPut = await putRes.json().catch(function(){ return {}; });
-      throw new Error(errPut.message || ("GitHub PUT failed (" + putRes.status + ")"));
+      throw new Error(errPut.message || ("Submission failed (" + putRes.status + ")"));
     }
 
-    setFbStatus("Saved! Feedback appended to " + owner + "/" + repo + "/" + path + ".", true);
-    btn.textContent = "Feedback saved!";
+    setFbStatus("Thank you! Your feedback has been recorded.", true);
+    btn.textContent = "Feedback submitted";
   } catch(e){
-    setFbStatus("Could not save to GitHub: " + e.message, false);
+    setFbStatus("Could not submit feedback: " + e.message, false);
     btn.disabled = false;
-    btn.textContent = "Save feedback to GitHub (feedback.csv)";
+    btn.textContent = "Submit feedback";
   }
 };
 
