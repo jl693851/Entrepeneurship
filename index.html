@@ -208,7 +208,7 @@ const DIMENSIONS = [
   {
     key:"data", label:"Data",
     q:"What exactly goes into the tool – and would you be fine if it showed up in tomorrow's newspaper?",
-    kw:[/customer|client|employee|patient|student|applicant|cv|resume|salary|personal|contract|confidential|email|health|hr/i,
+    kw:[/customer|client|employee|patient|student|applicant|cv|resume|salary|personal|contract|confidential|email|health|hr\b/i,
         "Your description mentions content that likely contains personal or confidential data. Check whether the tool you use is approved and what it does with inputs."],
     opts:[
       ["Only public or self-written, non-sensitive content",0,"Fine – but check again in six months. Inputs tend to creep from 'harmless' to 'just this once, the real file'."],
@@ -358,21 +358,20 @@ function showResult(){
   const acts=DIMENSIONS.map((d,i)=>[s[i],d]).filter(x=>x[0]>=1).sort((a,b)=>b[0]-a[0]);
   $("actions").innerHTML=acts.length?acts.map(([v,d])=>`<li><b>${d.label}:</b> ${d.fix}</li>`).join(""):"<li>No gaps flagged. Re-run the check if the task, the data or the tool changes.</li>";
 
-  $("summary").textContent=
-`CRITICAL COLLEAGUE – AI USE CHECK
-Plan: ${planText}
-Output used for: ${STAKES[stakes].t}
-Overall risk: ${L.name} (score ${score.toFixed(1)})
+  const dimLines = DIMENSIONS.map((d,i)=>`${d.label} [${s[i]}/3]: ${d.opts[answers[i]][0]}${reasons[i]?"\n  Reasoning: "+reasons[i]:""}`).join("\n");
+  const flagLines = flags.length ? "\nRed flags:\n- " + flags.join("\n- ") : "";
 
-${DIMENSIONS.map((d,i)=>`${d.label} [${s[i]}/3]: ${d.opts[answers[i]][0]}${reasons[i]?"
-  Reasoning: "+reasons[i]:""}`).join("
-")}
-${flags.length?"
-Red flags:
-- "+flags.join("
-- "):""}
+  $("summary").textContent = [
+    "CRITICAL COLLEAGUE – AI USE CHECK",
+    "Plan: " + planText,
+    "Output used for: " + STAKES[stakes].t,
+    "Overall risk: " + L.name + " (score " + score.toFixed(1) + ")",
+    "",
+    dimLines + flagLines,
+    "",
+    "Self-assessment, not a compliance review. Generated with a prototype built with AI assistance (Claude Opus 5.5)."
+  ].join("\n");
 
-Self-assessment, not a compliance review. Generated with a prototype built with AI assistance (Claude Opus 5.5).`;
   $("fbStatus").className="status-msg";
   $("fbStatus").textContent="";
   $("submitFb").disabled=false;
@@ -388,10 +387,8 @@ $("copyPrompt").onclick=e=>copy($("sysprompt").textContent,e.target);
 const CSV_HEADER = "timestamp,plan,stakes,risk_level,score,data_score,errors_score,check_score,accountability_score,loss_score,flags_count,plan_changed,helpfulness_rating,comment";
 
 function csvEscape(val){
-  const str = String(val ?? "").replace(/
-?
-/g, " ");
-  return `"${str.replace(/"/g, '""')}"`;
+  const str = String(val ?? "").replace(/\r?\n/g, " ");
+  return '"' + str.replace(/"/g, '""') + '"';
 }
 
 function buildCsvRow(){
@@ -415,7 +412,6 @@ function buildCsvRow(){
   ].map(csvEscape).join(",");
 }
 
-// Load saved GitHub settings from localStorage (and URL query params if shared for user testing)
 (function initGhConfig(){
   const params = new URLSearchParams(window.location.search);
   ["owner","repo","path","token"].forEach(k=>{
@@ -433,9 +429,7 @@ function setFbStatus(msg, ok){
 }
 
 $("downloadCsv").onclick=()=>{
-  const content = CSV_HEADER + "
-" + buildCsvRow() + "
-";
+  const content = [CSV_HEADER, buildCsvRow(), ""].join("\n");
   const blob = new Blob([content], {type:"text/csv;charset=utf-8;"});
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
@@ -479,8 +473,7 @@ $("submitFb").onclick=async ()=>{
     if(getRes.ok){
       const fileData = await getRes.json();
       sha = fileData.sha;
-      const binStr = atob(fileData.content.replace(/
-/g, ""));
+      const binStr = atob(fileData.content.replace(/\s/g, ""));
       const bytes = Uint8Array.from(binStr, c => c.charCodeAt(0));
       existingContent = new TextDecoder().decode(bytes);
     } else if(getRes.status !== 404){
@@ -489,13 +482,9 @@ $("submitFb").onclick=async ()=>{
     }
 
     const row = buildCsvRow();
-    let updatedCsv = existingContent.trim()
-      ? existingContent.trimEnd() + "
-" + row + "
-"
-      : CSV_HEADER + "
-" + row + "
-";
+    const updatedCsv = existingContent.trim()
+      ? [existingContent.trimEnd(), row, ""].join("\n")
+      : [CSV_HEADER, row, ""].join("\n");
 
     const utf8Bytes = new TextEncoder().encode(updatedCsv);
     let bin = "";
