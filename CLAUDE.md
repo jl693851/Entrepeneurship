@@ -74,3 +74,4 @@ A **custom GPT (or a pasted system prompt) that plays a critical colleague.**
 |---|---|---|
 | 2026-11-10 | critical-colleague_v0.1.html | First prototype |
 | 2026-11-11 | CLAUDE.md | Context file created |
+| 2026-11-13 | index.html (v0.4, branch V1.1) | Feedback made more prominent: a banner under the rating, a floating "Give feedback" button, and a highlighted feedback card |
