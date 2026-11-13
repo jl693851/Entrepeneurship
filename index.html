@@ -163,6 +163,16 @@
     .lang-pick .opts{display:grid; grid-template-columns:1fr 1fr; gap:10px}
     .lang-pick button{font:inherit; font-weight:600; font-size:1.05rem; padding:16px; border:1px solid #C9CDC7; background:var(--surface); color:var(--ink); border-radius:var(--r-sm); cursor:pointer}
     .lang-pick button:hover{border-color:var(--ink)}
+    #langDialog:has(.welcome:not(.hidden)){width:min(500px, calc(100vw - 24px))}
+    .welcome{padding:30px 28px 26px}
+    .welcome h2{font-size:1.35rem; margin:0 0 16px}
+    .welcome .facts-list{list-style:none; margin:0 0 18px; padding:0; display:grid; gap:10px}
+    .welcome .facts-list li{display:flex; gap:10px; align-items:flex-start; font-size:.98rem}
+    .welcome .facts-list svg{flex:none; margin-top:4px}
+    .welcome .ask{background:var(--mark-soft); border-left:4px solid var(--mark); border-radius:0 var(--r-sm) var(--r-sm) 0; padding:12px 14px; margin:0 0 14px; font-size:.98rem}
+    .welcome .consent{font-size:.88rem; color:var(--muted); margin:0 0 22px}
+    .welcome .btn{width:100%}
+    .consent-line{font-size:.9rem; font-weight:500; color:var(--ink); margin:10px 0 0}
 
     .prose p, .prose li{max-width:62ch}
     .prose h3{margin-top:26px}
@@ -274,7 +284,7 @@
         <h3 data-t="aboutH2"></h3>
         <ul class="list"><li data-t="about5"></li><li data-t="about6"></li><li data-t="about7"></li></ul>
         <h3 data-t="aboutH3"></h3>
-        <ul class="list"><li data-t="about8"></li><li data-t="about9"></li><li data-t="about10"></li></ul>
+        <ul class="list"><li data-t="about8"></li><li data-t="about9"></li><li data-t="about11"></li><li data-t="about10"></li></ul>
       </div>
     </section>
   </main>
@@ -284,13 +294,23 @@
   </dialog>
 
   <dialog id="langDialog" aria-labelledby="langTitle">
-    <div class="lang-pick">
+    <div class="lang-pick" id="langStep">
       <h2 id="langTitle">Choose your language</h2>
       <p>Sprache wählen</p>
       <div class="opts">
         <button type="button" data-lang="en" lang="en">English</button>
         <button type="button" data-lang="de" lang="de">Deutsch</button>
       </div>
+    </div>
+    <div class="welcome hidden" id="welcomeStep">
+      <h2 id="welcomeTitle" data-t="wTitle"></h2>
+      <ul class="facts-list">
+        <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="none" stroke="#1F5C4A" stroke-width="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2" fill="none" stroke="#1F5C4A" stroke-width="1.5"/></svg><span data-t="w1"></span></li>
+        <li><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8l11-5-4 11-2-4.5z" fill="none" stroke="#1F5C4A" stroke-width="1.5" stroke-linejoin="round"/></svg><span data-t="w2"></span></li>
+      </ul>
+      <p class="ask" data-t="w3"></p>
+      <p class="consent" data-t="w4"></p>
+      <button class="btn btn-primary" type="button" id="welcomeOk" data-t="wBtn"></button>
     </div>
   </dialog>
 
@@ -474,7 +494,15 @@
       about8:"The check runs entirely in your browser. Nothing is stored or sent while you answer.",
       about9:"If you send feedback after a check, your plan description, your answers to the five questions and your feedback are stored by the ClearAI team to evaluate the prototype. Only the team can see them.",
       about10:"Your email address is optional. We only use it to ask follow-up questions about your feedback.",
-      foot1:"ClearAI prototype v0.6. A thinking aid, not a compliance review.", foot2:"Built with AI assistance (Claude Opus 5.5).",
+      about11:"By sending feedback, you agree that we process this data for our academic work.",
+      wTitle:"Before you start",
+      w1:"Nothing you enter is saved or sent while you use ClearAI. Your plan and your answers stay in your browser.",
+      w2:"We only receive your plan, your answers and your feedback if you send the feedback form at the end.",
+      w3:"ClearAI is a student project, and your input shapes it. Please answer the questions thoughtfully, then fill in the feedback form and send it. Thank you for helping us.",
+      w4:"By sending the feedback, you agree that we process your data for our academic work.",
+      wBtn:"Got it, let’s start",
+      consentLine:"By sending, you agree that we process your data for our academic work.",
+      foot1:"ClearAI prototype v0.7. A thinking aid, not a compliance review.", foot2:"Built with AI assistance (Claude Opus 5.5).",
       fbTitle:"Help us improve ClearAI", fbSub:"Short answers are enough. Every question is optional.",
       secYou:"About you", secCheck:"About this check", secClear:"About ClearAI", secContact:"Stay in touch",
       f_role:"What is your current role?", choose:"Choose…",
@@ -545,7 +573,15 @@
       about8:"Die Prüfung läuft vollständig in Ihrem Browser. Während Sie antworten, wird nichts gespeichert oder gesendet.",
       about9:"Wenn Sie nach einer Prüfung Feedback senden, speichert das ClearAI-Team Ihre Planbeschreibung, Ihre Antworten auf die fünf Fragen und Ihr Feedback, um den Prototyp auszuwerten. Nur das Team kann sie sehen.",
       about10:"Ihre E-Mail-Adresse ist freiwillig. Wir nutzen sie nur für Rückfragen zu Ihrem Feedback.",
-      foot1:"ClearAI-Prototyp v0.6. Eine Denkhilfe, keine Compliance-Prüfung.", foot2:"Erstellt mit KI-Unterstützung (Claude Opus 5.5).",
+      about11:"Mit dem Absenden des Feedbacks willigen Sie ein, dass wir diese Daten im Rahmen unserer akademischen Arbeit verarbeiten.",
+      wTitle:"Bevor Sie starten",
+      w1:"Solange Sie ClearAI nutzen, wird nichts gespeichert oder gesendet. Ihr Plan und Ihre Antworten bleiben in Ihrem Browser.",
+      w2:"Wir erhalten Ihren Plan, Ihre Antworten und Ihr Feedback nur, wenn Sie am Ende das Feedback-Formular absenden.",
+      w3:"ClearAI ist ein studentisches Projekt, und Ihre Rückmeldung prägt es. Bitte beantworten Sie die Fragen mit Bedacht, füllen Sie danach das Feedback-Formular aus und senden Sie es ab. Vielen Dank für Ihre Unterstützung.",
+      w4:"Mit dem Absenden des Feedbacks willigen Sie ein, dass wir Ihre Daten im Rahmen unserer akademischen Arbeit verarbeiten.",
+      wBtn:"Verstanden, los geht’s",
+      consentLine:"Mit dem Absenden willigen Sie ein, dass wir Ihre Daten im Rahmen unserer akademischen Arbeit verarbeiten.",
+      foot1:"ClearAI-Prototyp v0.7. Eine Denkhilfe, keine Compliance-Prüfung.", foot2:"Erstellt mit KI-Unterstützung (Claude Opus 5.5).",
       fbTitle:"Helfen Sie uns, ClearAI zu verbessern", fbSub:"Kurze Antworten genügen. Alle Fragen sind freiwillig.",
       secYou:"Über Sie", secCheck:"Zu dieser Prüfung", secClear:"Zu ClearAI", secContact:"Kontakt",
       f_role:"Was ist Ihre aktuelle Rolle?", choose:"Bitte wählen…",
@@ -635,7 +671,8 @@
           <p class="field-err hidden" id="${p}-emailErr" data-t="emailErr"></p>
         </div>
         <p class="hint" style="margin-top:22px" data-t="${withCheck?"fbNoteCheck":"fbNoteGeneral"}"></p>
-        <div class="actions"><button class="btn btn-primary" id="${p}-send" type="button" disabled data-t="send"></button></div>
+        <p class="consent-line" data-t="consentLine"></p>
+        <div class="actions" style="margin-top:16px"><button class="btn btn-primary" id="${p}-send" type="button" disabled data-t="send"></button></div>
         <p class="status hidden" id="${p}-status" role="status"></p>
       </div>
       <div class="fb-done hidden" id="${p}-done">
@@ -745,8 +782,19 @@
   function chooseLang(l){ store.set("clearai-lang",l); applyLang(l); }
   $("langSwitch").onclick=()=>chooseLang(lang==="en"?"de":"en");
   const langDlg=$("langDialog");
-  langDlg.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{ chooseLang(b.dataset.lang); langDlg.close(); });
-  langDlg.addEventListener("cancel",()=>chooseLang(lang));
+  function showWelcome(){
+    $("langStep").classList.add("hidden"); $("welcomeStep").classList.remove("hidden");
+    langDlg.setAttribute("aria-labelledby","welcomeTitle");
+    if(!langDlg.open) langDlg.showModal();
+    $("welcomeOk").focus();
+  }
+  function finishWelcome(){ store.set("clearai-welcome","1"); langDlg.close(); }
+  langDlg.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{ chooseLang(b.dataset.lang); showWelcome(); });
+  $("welcomeOk").onclick=finishWelcome;
+  langDlg.addEventListener("cancel",e=>{
+    if(!$("welcomeStep").classList.contains("hidden")){ store.set("clearai-welcome","1"); return; }
+    e.preventDefault(); chooseLang(lang); showWelcome();
+  });
 
   /* ---------- Tabs ---------- */
   const tabs=document.querySelectorAll(".nav button");
@@ -861,6 +909,7 @@ ${t("sumFoot")}`;
   const chosen=["en","de"].includes(urlLang)?urlLang:["en","de"].includes(saved)?saved:null;
   applyLang(chosen || ((navigator.language||"").toLowerCase().startsWith("de")?"de":"en"));
   if(!chosen) langDlg.showModal();
+  else if(!store.get("clearai-welcome")) showWelcome();
   </script>
 </body>
 </html>
