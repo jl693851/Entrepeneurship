@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ClearAI – AI Launch Risk Review</title>
+  <style>
+    :root{
+      --bg:#07111d; --bg-soft:#0d1a2b; --card:#101d2f; --card-2:#13263f; --ink:#edf6ff; --muted:#9bb8d1;
+      --line:rgba(151,180,214,.22); --brand:#73d7ff; --brand-2:#8b5cf6; --success:#2dd4bf; --warning:#f59e0b; --danger:#fb7185;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:
+      radial-gradient(circle at top left, rgba(115,215,255,.24), transparent 28%),
+      radial-gradient(circle at top right, rgba(139,92,246,.18), transparent 26%),
+      linear-gradient(180deg, var(--bg) 0%, #090f1a 100%); color:var(--ink); line-height:1.55}
+    main{max-width:960px; margin:0 auto; padding:28px 18px 64px}
+    .topbar{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0 18px}
+    .brand{display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.02em}
+    .brand-mark{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;
+      background:linear-gradient(135deg,var(--brand),var(--brand-2)); color:#07111d; font-weight:900; box-shadow:0 12px 30px rgba(115,215,255,.35)}
+    .brand-text{font-size:1.15rem}
+    .badge{font-size:.78rem; border:1px solid var(--line); background:rgba(255,255,255,.02); color:var(--muted); padding:7px 10px; border-radius:999px}
+    .hero{padding:30px 0 12px}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid rgba(115,215,255,.25);background:rgba(115,215,255,.08);color:var(--brand);font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+    h1{font-size:clamp(2.4rem,5vw,4rem); line-height:1.02; margin:18px 0 18px; letter-spacing:-.06em}
+    h1 .accent{background:linear-gradient(135deg,var(--brand),#d0f5ff 40%, #a78bfa 100%); -webkit-background-clip:text; background-clip:text; color:transparent}
+    .subtitle{max-width:700px; color:var(--muted); font-size:1.08rem; margin:0}
+    .tabs{display:flex;gap:10px; margin:24px 0 18px; flex-wrap:wrap}
+    .tab{border:1px solid var(--line); background:rgba(255,255,255,.02); color:var(--ink); padding:10px 16px; border-radius:999px; cursor:pointer; font:inherit; font-weight:600; transition:.2s ease}
+    .tab:hover{border-color:rgba(115,215,255,.45)}
+    .tab.active{background:linear-gradient(135deg, rgba(115,215,255,.14), rgba(139,92,246,.12)); border-color:rgba(115,215,255,.5); box-shadow:0 18px 35px rgba(18,29,47,.45)}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)); border:1px solid var(--line); border-radius:18px; padding:22px; margin-bottom:16px; box-shadow:0 18px 40px rgba(8,17,29,.38)}
+    h2{font-size:1.15rem; margin:0 0 12px; letter-spacing:-.03em}
+    label{font-weight:700; display:block; margin:14px 0 8px; color:#dfeeff}
+    textarea,select,input[type="text"],input[type="password"]{width:100%; font:inherit; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:rgba(13,26,43,.8); color:var(--ink)}
+    textarea:focus,select:focus,input:focus{border-color:rgba(115,215,255,.58); box-shadow:0 0 0 4px rgba(115,215,255,.08)}
+    textarea{min-height:110px; resize:vertical}
+    .hint{font-size:.9rem; color:var(--muted); margin-top:6px}
+    button.primary{background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#06111d; border:0; padding:12px 18px; border-radius:12px; font:inherit; font-weight:800; cursor:pointer; transition:.2s ease}
+    button.ghost{background:rgba(255,255,255,.02); border:1px solid var(--line); color:var(--ink); padding:10px 14px; border-radius:12px; font:inherit; font-weight:700; cursor:pointer; margin-top:8px}
+    button:disabled{opacity:.45; cursor:not-allowed}
+    .progress{height:8px; background:rgba(255,255,255,.06); border-radius:999px; overflow:hidden; margin-bottom:16px}
+    .progress div{height:100%; background:linear-gradient(90deg,var(--brand),var(--brand-2)); transition:width .3s ease}
+    .qnum{font-size:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-weight:700}
+    .question{font-size:1.25rem; font-weight:700; margin:8px 0 10px; letter-spacing:-.03em}
+    .context{background:rgba(115,215,255,.08); border-left:3px solid var(--brand); padding:10px 12px; border-radius:8px; font-size:.95rem; margin:8px 0; color:#dfeeff}
+    .opt{display:flex; gap:12px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin:9px 0; cursor:pointer; font-weight:500; background:rgba(255,255,255,.02)}
+    .opt:hover{border-color:rgba(115,215,255,.55)}
+    .opt input{margin-top:4px}
+    .pushback{display:none; background:rgba(245,158,11,.08); border-left:3px solid var(--warning); padding:10px 12px; border-radius:8px; margin-top:12px; font-size:.96rem; color:#f4d294}
+    .pushback b{display:block; margin-bottom:2px}
+    .rating{text-align:center; padding:18px 20px; border-radius:16px; color:#fff; margin-bottom:18px; background:linear-gradient(135deg, var(--brand-2), var(--brand)); box-shadow:0 20px 38px rgba(18,29,47,.45)}
+    .rating .lvl{font-size:1.8rem; font-weight:900; letter-spacing:-.04em}
+    .bar-row{display:grid; grid-template-columns:120px 1fr 36px; gap:12px; align-items:center; margin:10px 0; font-size:.95rem}
+    .bar{height:12px; background:rgba(255,255,255,.06); border-radius:999px; overflow:hidden}
+    .bar div{height:100%}
+    ul{padding-left:22px}
+    li{margin:8px 0; color:#dbebff}
+    pre{white-space:pre-wrap; background:rgba(10,20,35,.64); border:1px solid var(--line); border-radius:12px; padding:14px; font-size:.86rem; max-height:420px; overflow:auto; color:#dfeeff}
+    .flag{color:var(--danger); font-weight:700}
+    .fb-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    @media(max-width:560px){.fb-grid{grid-template-columns:1fr}.topbar{align-items:flex-start; flex-direction:column}.brand{font-size:.95rem}}
+    .status-msg{margin-top:12px; padding:10px 12px; border-radius:10px; font-size:.92rem; display:none}
+    .status-ok{display:block; background:rgba(45,212,191,.1); border-left:3px solid var(--success); color:#b8f5e8}
+    .status-err{display:block; background:rgba(251,113,133,.1); border-left:3px solid var(--danger); color:#ffc3cf}
+    details.gh-cfg{margin-top:14px; border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:rgba(255,255,255,.02)}
+    details.gh-cfg summary{cursor:pointer; font-weight:700; font-size:.9rem; color:var(--muted)}
+    footer{margin-top:32px; font-size:.82rem; color:var(--muted); text-align:center}
+    .hidden{display:none}
+  </style>
+</head>
+<body>
+  <main>
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">C</div>
+        <div class="brand-text">ClearAI</div>
+      </div>
+      <div class="badge">AI launch risk review</div>
+    </header>
+
+    <div class="hero">
+      <div class="eyebrow">Safer AI decisions</div>
+      <h1>Ship AI with <span class="accent">clarity</span>, not guesswork.</h1>
+      <p class="subtitle">Describe how you plan to use AI. Get five tough questions, honest pushback, and a risk score before launch.</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="check">Run a check</button>
+      <button class="tab" data-tab="prompt">System prompt</button>
+      <button class="tab" data-tab="about">About ClearAI</button>
+    </div>
+
+    <section id="tab-check">
+      <div class="card" id="step-intro">
+        <h2>1 · Your AI plan</h2>
+        <label for="plan">What task, and how will AI be used?</label>
+        <textarea id="plan" placeholder="e.g. I want to summarize customer tickets with AI, then send the draft to a team lead for approval."></textarea>
+        <div class="hint">Be specific: which tool, what goes in, what comes out, and where the output goes.</div>
+        <label for="stakes">Where does the output end up?</label>
+        <select id="stakes">
+          <option value="1">Only for me (notes, brainstorming, a personal draft)</option>
+          <option value="2" selected>Shared internally (team docs, internal workflows)</option>
+          <option value="3">External (customers, partners, public, graded submission)</option>
+          <option value="4">Feeds decisions about people, money, health, or legal matters</option>
+        </select>
+        <button class="primary" id="start">Ask me the hard questions →</button>
+      </div>
+
+      <div class="card hidden" id="step-q">
+        <div class="progress"><div id="prog"></div></div>
+        <div class="qnum" id="qnum"></div>
+        <div class="question" id="qtext"></div>
+        <div id="qcontext"></div>
+        <div id="qopts"></div>
+        <div class="pushback" id="pushback"><b>ClearAI pushes back:</b><span id="pushtext"></span></div>
+        <label for="reason">Your reasoning (optional)</label>
+        <textarea id="reason" style="min-height:70px" placeholder="Write it down — putting it into words is half the exercise."></textarea>
+        <button class="ghost" id="back">← Back</button>
+        <button class="primary" id="next" disabled>Next →</button>
+      </div>
+
+      <div class="hidden" id="step-result">
+        <div class="rating" id="ratingBox"><div>Overall risk</div><div class="lvl" id="ratingLvl"></div><div id="ratingSub"></div></div>
+        <div class="card"><h2>Breakdown</h2><div id="bars"></div></div>
+        <div class="card" id="flagsCard"><h2>Red flags</h2><ul id="flags"></ul></div>
+        <div class="card"><h2>Before you go ahead</h2><ul id="actions"></ul></div>
+        <div class="card"><h2>Your summary</h2><pre id="summary"></pre>
+          <button class="ghost" id="copySummary">Copy summary</button>
+          <button class="primary" id="restart">Check another plan</button>
+        </div>
+
+        <div class="card" id="feedback-card">
+          <h2>Prototype feedback</h2>
+          <p class="hint">Help improve ClearAI. Your feedback is sent to the Cloudflare feedback endpoint and can be exported centrally for your team.</p>
+
+          <div class="fb-grid">
+            <div>
+              <label for="fbChanged">Did this check change your AI plan?</label>
+              <select id="fbChanged">
+                <option value="Yes – changed my plan">Yes – I will adjust my plan</option>
+                <option value="Partially – added a check">Partially – I will add a review step</option>
+                <option value="No – kept plan as is">No – I will proceed as planned</option>
+                <option value="Stopped – won't use AI here">Stopped – I won't use AI for this</option>
+              </select>
+            </div>
+            <div>
+              <label for="fbHelp">How helpful were the questions and pushback?</label>
+              <select id="fbHelp">
+                <option value="5">5 – Very helpful</option>
+                <option value="4" selected>4 – Helpful</option>
+                <option value="3">3 – Neutral</option>
+                <option value="2">2 – Not very helpful</option>
+                <option value="1">1 – Not helpful at all</option>
+              </select>
+            </div>
+          </div>
+
+          <label for="fbComment">What felt realistic, annoying, or missing?</label>
+          <textarea id="fbComment" style="min-height:80px" placeholder="e.g. Question 2 made me realize I don't verify citations, or the rating felt too strict..."></textarea>
+
+          <details class="gh-cfg">
+            <summary>Cloudflare feedback endpoint</summary>
+            <div class="hint" style="margin-bottom:8px">This form sends data directly to your Cloudflare Worker instead of requiring a GitHub token.</div>
+            <label for="workerUrl">Worker URL</label>
+            <input type="text" id="workerUrl" value="https://clearaiproject.clearai-alpha.workers.dev/api/feedback" placeholder="https://your-worker.example.workers.dev/api/feedback">
+          </details>
+
+          <button class="primary" id="submitFb">Save feedback to Cloudflare</button>
+          <button class="ghost" id="downloadCsv">Download CSV row locally</button>
+          <div class="status-msg" id="fbStatus"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-prompt" class="hidden">
+      <div class="card">
+        <h2>System prompt for a custom GPT / Claude project</h2>
+        <p class="hint">Paste this into the instructions field. The LLM version asks follow-up questions in free text and adapts to your answers; this page uses fixed questions with transparent reasoning.</p>
+        <pre id="sysprompt"></pre>
+        <button class="primary" id="copyPrompt">Copy prompt</button>
+      </div>
+    </section>
+
+    <section id="tab-about" class="hidden">
+      <div class="card">
+        <h2>How the rating works</h2>
+        <ul>
+          <li>Each of the five dimensions is scored 0 (low risk) to 3 (high risk). “I don’t know” scores 3 — not knowing is itself the risk.</li>
+          <li>The total (0–15) is weighted by where the output ends up (×0.8 personal … ×1.4 decisions about people/money/health/law).</li>
+          <li>Bands: under 4 Low · under 8 Moderate · under 11 High · 11+ Critical.</li>
+          <li>Red-flag rules override the average, e.g. sensitive data + no reviewer is at least High, no matter how good the rest looks.</li>
+        </ul>
+        <h2>Known limits</h2>
+        <ul>
+          <li>It rates your <em>self-reported</em> answers. Optimistic answers produce optimistic ratings.</li>
+          <li>Keyword detection for context hints is crude; it can miss or over-flag.</li>
+          <li>It is a thinking exercise, not a compliance or legal assessment (e.g. GDPR, EU AI Act).</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>Prototype v0.1 · Built for safer AI launches · Review before use.</footer>
+  </main>
+
+  <script>
+  const DIMENSIONS = [
+    {
+      key:"data", label:"Data",
+      q:"What exactly goes into the tool — and would you be fine if it showed up in tomorrow’s newspaper?",
+      kw:[/customer|client|employee|patient|student|applicant|cv|resume|salary|personal|contract|confidential|email|health|hr\b/i,
+          "Your description mentions content that likely contains personal or confidential data. Check whether the tool you use is approved and what it does with inputs."],
+      opts:[
+        ["Only public or self-written, non-sensitive content",0,"Fine — but check again in six months. Inputs tend to creep from ‘harmless’ to ‘just this once, the real file’."],
+        ["Internal information, in a company-approved tool with a data agreement",1,"Do you know what the agreement actually covers — training on your data, retention, where it’s stored? ‘Approved’ is not the same as ‘safe’."],
+        ["Internal or confidential information, in a tool I haven’t checked",2,"Then you are making a data-protection decision on behalf of your organisation without the information to make it."],
+        ["Personal data about people (customers, staff, applicants) or confidential data, in an unapproved tool",3,"This is the scenario most data-protection incidents start with. Could you anonymise or restrict it first?"],
+        ["I don’t know",3,"Not knowing what you put in is the problem. Find out before the first upload, not after."]
+      ],
+      fix:"Strip names and identifiers before input, or switch to an approved tool. Ask your data-protection contact one specific question: ‘May I put X into tool Y?’"
+    },
+    {
+      key:"errors", label:"Errors",
+      q:"Assume the output is confidently wrong in one place. How would you notice — and what happens if you don’t?",
+      kw:[/number|figure|financ|legal|law|translat|code|calculat|statistic|summar|citation|source|medical|dose/i,
+          "Your task involves numbers, facts, legal wording, code or summaries — areas where AI errors look plausible and are easy to miss."],
+      opts:[
+        ["Errors would be obvious and harmless",0,"Are you sure? The dangerous errors are the ones that look exactly like correct answers."],
+        ["I’d catch them with a normal check; consequences are minor and reversible",1,"What is a ‘normal check’ here, concretely? If you can’t name it, you won’t do it under time pressure."],
+        ["Errors could be subtle (facts, figures, wording) and hard to spot",2,"Then reading it once won’t catch them. What source would you compare against?"],
+        ["Errors would be hard to spot AND hard to undo once acted on",3,"This combination is where AI should draft at most, never decide. What’s your safety net?"],
+        ["I haven’t thought about it",3,"Then do it now: name the single worst plausible error and its consequence."]
+      ],
+      fix:"Write down the worst plausible error. Define a concrete check against an independent source (original data, the law text, a test run) for exactly that error type."
+    },
+    {
+      key:"check", label:"Who checks",
+      q:"Who reviews the output before it’s used — and do they know enough to disagree with it?",
+      kw:[/automat|directly|straight|without|bulk|batch|all of|every/i,
+          "Your description sounds like outputs may flow on with little or no human review."],
+      opts:[
+        ["A qualified person checks every output against sources",0,"Good. Does that person have the time — or will ‘check’ become ‘skim’ by week three?"],
+        ["I check it myself, and I know the subject well",1,"Self-review of something you asked for is weak: you see what you expected. Would a second pair of eyes be cheap here?"],
+        ["Spot checks or a quick skim",2,"A skim catches formatting, not fluent nonsense. Which outputs get skipped, and why those?"],
+        ["No one — it goes straight out",3,"Then the AI is effectively making the final call. Is that what you intend?"]
+      ],
+      fix:"Name the reviewer, define what they compare against, and budget their time. If nobody qualified can review, reduce the AI’s role to drafting."
+    },
+    {
+      key:"account", label:"Accountability",
+      q:"If this goes wrong, whose name is on it — and could that person explain how the result came about?",
+      kw:[/decid|decision|hiring|recruit|grade|assess|evaluat|approv|reject|score/i,
+          "Your task looks like it influences decisions about people or outcomes. ‘The AI suggested it’ will not hold up as a justification."],
+      opts:[
+        ["Clearly me (or a named owner), and I can explain and reproduce the reasoning",0,"Good. Can you also explain it to the person affected by it, in plain words?"],
+        ["Clear owner, but they couldn’t fully explain the AI’s part",1,"Owning what you can’t explain is a weak position. What would you say if challenged?"],
+        ["Shared or unclear between people or teams",2,"Shared responsibility usually means nobody’s. Who gets the call when it fails?"],
+        ["Nobody specifically / ‘the tool’",3,"Tools can’t be accountable. Someone will be held responsible — better to decide who now."]
+      ],
+      fix:"Name one owner. Make sure they can explain the result without referring to the AI, or document the prompt, inputs and checks so it is reconstructible."
+    },
+    {
+      key:"loss", label:"What you’d lose",
+      q:"What would you or your team stop learning, noticing or doing by handing this to AI?",
+      kw:[/learn|practi|write|analy|feedback|relationship|customer contact|thesis|assignment|essay|report/i,
+          "This task may build skills or relationships. Outsourcing it can be efficient now and costly later."],
+      opts:[
+        ["Nothing meaningful — routine work with no learning value",0,"Plausible. But routine tasks are often where newcomers learn the ropes. Is it routine for everyone?"],
+        ["Some practice, and I accept that deliberately",1,"Fine, if it stays a choice. How would you notice if the skill had faded?"],
+        ["A core skill, judgment, or relationship would weaken over time",2,"Then the short-term gain has a long-term price. Could AI support the task instead of doing it?"],
+        ["I haven’t considered it / it would replace the point of the task",3,"If the task exists to build understanding (e.g. coursework), AI doing it defeats its purpose."]
+      ],
+      fix:"Decide which part stays human on purpose (e.g. first draft, the key judgment, the client conversation). Use AI for critique or the second pass instead."
+    }
+  ];
+
+  const STAKES = {1:{f:0.8,t:"personal use"},2:{f:1.0,t:"internal use"},3:{f:1.2,t:"external use"},4:{f:1.4,t:"decisions about people / money / health / law"}};
+  const LEVELS = [
+    {max:4,name:"Low",color:"var(--success)",sub:"Reasonable plan. Keep the checks you described."},
+    {max:8,name:"Moderate",color:"var(--warning)",sub:"Workable, with specific gaps to close first."},
+    {max:11,name:"High",color:"var(--danger)",sub:"Don’t go ahead as described. Fix the flagged areas."},
+    {max:99,name:"Critical",color:"#ff6b6b",sub:"Stop and redesign. Involve someone responsible for data, quality or compliance."}
+  ];
+
+  let idx=0, answers=[], reasons=[], planText="", stakes=2, lastResult=null;
+  const $=id=>document.getElementById(id);
+
+  document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    t.classList.add("active");
+    ["check","prompt","about"].forEach(n=>$("tab-"+n).classList.toggle("hidden",n!==t.dataset.tab));
+  });
+
+  $("start").onclick=()=>{
+    planText=$("plan").value.trim();
+    if(planText.length<20){alert("Describe your plan in at least a sentence — vague plans get vague answers.");return;}
+    stakes=+$("stakes").value; idx=0; answers=[]; reasons=[];
+    $("step-intro").classList.add("hidden"); $("step-q").classList.remove("hidden");
+    renderQ();
+  };
+
+  function renderQ(){
+    const d=DIMENSIONS[idx];
+    $("prog").style.width=(idx/DIMENSIONS.length*100)+"%";
+    $("qnum").textContent=`Question ${idx+1} of ${DIMENSIONS.length} · ${d.label}`;
+    $("qtext").textContent=d.q;
+    $("qcontext").innerHTML=d.kw[0].test(planText)?`<div class="context">${d.kw[1]}</div>`:"";
+    $("qopts").innerHTML=d.opts.map((o,i)=>`<label class="opt"><input type="radio" name="opt" value="${i}" ${answers[idx]===i?"checked":""}><span>${o[0]}</span></label>`).join("");
+    $("reason").value=reasons[idx]||"";
+    $("back").style.visibility=idx===0?"hidden":"visible";
+    $("next").textContent=idx===DIMENSIONS.length-1?"See my risk rating →":"Next →";
+    showPush();
+    document.querySelectorAll('input[name=opt]').forEach(r=>r.onchange=()=>{answers[idx]=+r.value;showPush();});
+  }
+  function showPush(){
+    const a=answers[idx];
+    $("next").disabled=a===undefined;
+    $("pushback").style.display=a===undefined?"none":"block";
+    if(a!==undefined) $("pushtext").textContent=DIMENSIONS[idx].opts[a][2];
+  }
+  $("next").onclick=()=>{reasons[idx]=$("reason").value.trim(); if(idx<DIMENSIONS.length-1){idx++;renderQ();}else showResult();};
+  $("back").onclick=()=>{reasons[idx]=$("reason").value.trim(); idx--; renderQ();};
+
+  function showResult(){
+    const s=DIMENSIONS.map((d,i)=>d.opts[answers[i]][1]);
+    const sc=Object.fromEntries(DIMENSIONS.map((d,i)=>[d.key,s[i]]));
+    const raw=s.reduce((a,b)=>a+b,0);
+    let score=raw*STAKES[stakes].f;
+    let lvlIdx=LEVELS.findIndex(l=>score<l.max);
+    const flags=[];
+    const floor=(min,msg)=>{flags.push(msg); if(lvlIdx<min) lvlIdx=min;};
+    if(sc.data===3&&sc.check>=2) floor(2,"Sensitive or unknown data combined with weak or no review.");
+    if(stakes===4&&sc.check>=2) floor(2,"Output feeds decisions about people/money/health/law without solid review.");
+    if(sc.errors===3&&sc.check===3) floor(2,"Hard-to-detect errors and nobody checks.");
+    if(sc.account===3) floor(1,"No one is accountable for the result.");
+    if(stakes===4&&sc.account>=2&&sc.data>=2) floor(3,"High-stakes decision, unclear owner, and risky data handling.");
+    const dk=DIMENSIONS.filter((d,i)=>d.opts[answers[i]][0].startsWith("I don’t know")||d.opts[answers[i]][0].startsWith("I haven’t")).map(d=>d.label);
+    if(dk.length) flags.push("You answered ‘don’t know / haven’t thought about it’ for: "+dk.join(", ")+".");
+    const L=LEVELS[lvlIdx];
+
+    lastResult = {
+      timestamp: new Date().toISOString(),
+      plan: planText,
+      stakes: STAKES[stakes].t,
+      score: score.toFixed(1),
+      riskLevel: L.name,
+      scores: sc,
+      flagsCount: flags.length
+    };
+
+    $("step-q").classList.add("hidden"); $("step-result").classList.remove("hidden");
+    $("ratingBox").style.background=L.color; $("ratingLvl").textContent=L.name;
+    $("ratingSub").textContent=`${L.sub} (score ${score.toFixed(1)} · weighted for ${STAKES[stakes].t})`;
+    const col=v=>["var(--success)","var(--warning)","var(--danger)","#ff6b6b"][v];
+    $("bars").innerHTML=DIMENSIONS.map((d,i)=>`<div class="bar-row"><span>${d.label}</span><div class="bar"><div style="width:${s[i]/3*100}%;background:${col(s[i])}"></div></div><span>${s[i]}/3</span></div>`).join("");
+    $("flagsCard").style.display=flags.length?"block":"none";
+    $("flags").innerHTML=flags.map(f=>`<li class="flag">${f}</li>`).join("");
+    const acts=DIMENSIONS.map((d,i)=>[s[i],d]).filter(x=>x[0]>=1).sort((a,b)=>b[0]-a[0]);
+    $("actions").innerHTML=acts.length?acts.map(([v,d])=>`<li><b>${d.label}:</b> ${d.fix}</li>`).join(""):"<li>No gaps flagged. Re-run the check if the task, the data or the tool changes.</li>";
+
+    $("summary").textContent=
+`CLEARAI – AI LAUNCH RISK REVIEW
+Plan: ${planText}
+Output used for: ${STAKES[stakes].t}
+Overall risk: ${L.name} (score ${score.toFixed(1)})
+
+${DIMENSIONS.map((d,i)=>`${d.label} [${s[i]}/3]: ${d.opts[answers[i]][0]}${reasons[i]?"\n  Reasoning: "+reasons[i]:""}`).join("\n")}
+${flags.length?"\nRed flags:\n- "+flags.join("\n- "):""}
+
+Self-assessment, not a compliance review. Generated with a prototype built with AI assistance.`;
+    $("fbStatus").className="status-msg";
+    $("fbStatus").textContent="";
+    $("submitFb").disabled=false;
+    window.scrollTo(0,0);
+  }
+
+  $("restart").onclick=()=>{ $("step-result").classList.add("hidden"); $("step-intro").classList.remove("hidden"); window.scrollTo(0,0); };
+  function copy(text,btn){ navigator.clipboard.writeText(text).then(()=>{const o=btn.textContent;btn.textContent="Copied ✓";setTimeout(()=>btn.textContent=o,1500);}).catch(()=>alert("Copy failed — your browser blocked clipboard access.")); }
+  $("copySummary").onclick=e=>copy($("summary").textContent,e.target);
+  $("copyPrompt").onclick=e=>copy($("sysprompt").textContent,e.target);
+
+  const CSV_HEADER = "timestamp,plan,stakes,risk_level,score,data_score,errors_score,check_score,accountability_score,loss_score,flags_count,plan_changed,helpfulness_rating,comment";
+
+  function csvEscape(val){
+    const str = String(val ?? "").replace(/\n|\r/g, " ");
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+
+  function buildCsvRow(){
+    const r = lastResult || {};
+    const sc = r.scores || {};
+    return [
+      r.timestamp || new Date().toISOString(),
+      r.plan || "",
+      r.stakes || "",
+      r.riskLevel || "",
+      r.score || "",
+      sc.data ?? "",
+      sc.errors ?? "",
+      sc.check ?? "",
+      sc.account ?? "",
+      sc.loss ?? "",
+      r.flagsCount ?? "",
+      $("fbChanged").value,
+      $("fbHelp").value,
+      $("fbComment").value.trim()
+    ].map(csvEscape).join(",");
+  }
+
+  function buildFeedbackPayload(){
+    const r = lastResult || {};
+    const sc = r.scores || {};
+    return {
+      timestamp: r.timestamp || new Date().toISOString(),
+      plan: r.plan || "",
+      stakes: r.stakes || "",
+      risk_level: r.riskLevel || "",
+      score: r.score ?? null,
+      data_score: sc.data ?? null,
+      errors_score: sc.errors ?? null,
+      check_score: sc.check ?? null,
+      accountability_score: sc.account ?? null,
+      loss_score: sc.loss ?? null,
+      flags_count: r.flagsCount ?? null,
+      plan_changed: $("fbChanged").value,
+      helpfulness_rating: Number($("fbHelp").value) || null,
+      comment: $("fbComment").value.trim()
+    };
+  }
+
+  const FEEDBACK_ENDPOINT = "https://clearai-feedback-api.clearai-alpha.workers.dev/api/feedback";
+
+  function setFbStatus(msg, ok){
+    const el = $("fbStatus");
+    el.textContent = msg;
+    el.className = "status-msg " + (ok ? "status-ok" : "status-err");
+  }
+
+  $("downloadCsv").onclick=()=>{
+    const content = CSV_HEADER + "\n" + buildCsvRow() + "\n";
+    const blob = new Blob([content], {type:"text/csv;charset=utf-8;"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `clearai-feedback-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+  };
+
+  $("submitFb").onclick=async ()=>{
+    const endpoint = $("workerUrl").value.trim() || FEEDBACK_ENDPOINT;
+    if(!endpoint){
+      setFbStatus("Please set a Cloudflare Worker URL for feedback submission.", false);
+      return;
+    }
+
+    const btn = $("submitFb");
+    btn.disabled = true;
+    btn.textContent = "Saving to Cloudflare...";
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(buildFeedbackPayload())
+      });
+
+      const data = await response.json().catch(()=>({}));
+      if(!response.ok){
+        throw new Error(data.error || `Worker request failed (${response.status})`);
+      }
+
+      setFbStatus("Saved! Feedback was sent to the Cloudflare worker.", true);
+      btn.textContent = "Feedback saved ✓";
+    } catch(e){
+      setFbStatus("Could not save to Cloudflare: " + e.message, false);
+      btn.disabled = false;
+      btn.textContent = "Save feedback to Cloudflare";
+    }
+  };
+
+  $("workerUrl").value = FEEDBACK_ENDPOINT;
+
+  $("sysprompt").textContent=
+`ROLE
+You are "ClearAI": an experienced, sceptical but friendly co-worker. The user describes how they plan to use AI for a task. Your job is to make them think critically before they start.
+
+PROCESS
+1. If the description is vague (no tool, no inputs, no destination of output), ask ONE clarifying question first.
+2. Ask exactly five tough questions, ONE AT A TIME. Wait for the answer before the next. Tailor each to the user’s specific plan; never ask generically.
+   Q1 Data — What exactly goes into the tool? Personal, confidential, or third-party data? Is the tool approved?
+   Q2 Errors — Assume the output is confidently wrong in one place. How would they notice? What happens if they don’t?
+   Q3 Who checks — Who reviews before use, against what, and are they competent to disagree?
+   Q4 Accountability — Whose name is on the result? Could they explain it without saying “the AI said so”?
+   Q5 What you’d lose — Which skill, judgment, learning or relationship erodes if AI does this?
+3. After each answer, give ONE short pushback sentence if the answer is vague, optimistic or assumes something unchecked. If the answer is solid, say so in a few words and move on. Treat “I don’t know” as a risk.
+4. After Q5, give the assessment.
+
+SCORING
+Score each dimension 0 (low risk) to 3 (high risk). Weight the total by stakes: personal ×0.8, internal ×1.0, external ×1.2, decisions about people/money/health/law ×1.4.
+Bands: <4 Low, <8 Moderate, <11 High, ≥11 Critical.
+Overrides (minimum level regardless of score):
+- Sensitive/unknown data AND weak or no review → at least High.
+- High-stakes decisions AND weak review → at least High.
+- No accountable person → at least Moderate.
+
+OUTPUT FORMAT (after Q5)
+- Overall risk: [Level] — one-sentence reason.
+- Table: Dimension | Score 0–3 | Why (max 12 words).
+- Red flags (if any).
+- Top 3 concrete actions before starting, most important first.
+- One question the user should ask someone else (e.g. data-protection contact, supervisor).
+
+RULES
+- Never do the task itself. Only assess the plan.
+- Don’t lecture, moralise or use motivational language.
+- Don’t invent laws or policies. If regulation may apply (e.g. GDPR, EU AI Act, company policy), say “check with [role]” rather than giving legal conclusions.
+- Remind the user once, at the start, not to paste real confidential data into this chat — describing it is enough.
+- Language: reply in the user’s language.`;
+  </script>
+</body>
+</html>

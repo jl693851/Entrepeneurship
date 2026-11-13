@@ -74,3 +74,4 @@ A **custom GPT (or a pasted system prompt) that plays a critical colleague.**
 |---|---|---|
 | 2026-11-10 | critical-colleague_v0.1.html | First prototype |
 | 2026-11-11 | CLAUDE.md | Context file created |
+| 2026-11-13 | index.html (v0.2) | Minimalist redesign of the ClearAI site; feedback made prominent (header button on every screen, feedback panel directly under the verdict, general-feedback dialog). v0.1 kept as `history/index_v0.1.html`. |
