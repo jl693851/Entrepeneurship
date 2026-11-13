@@ -50,6 +50,22 @@
   .status-msg{margin-top:12px;padding:10px 12px;border-radius:8px;font-size:.92rem;display:none}
   .status-ok{display:block;background:#e8f5ee;border-left:3px solid var(--low);color:#1b4d30}
   .status-err{display:block;background:#fdecea;border-left:3px solid var(--crit);color:#7a0e20}
+  /* Feedback: make it stand out */
+  .fb-cta{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:#fff4d6;border:2px solid var(--mod);border-radius:12px;padding:14px 18px;margin-bottom:16px}
+  .fb-cta p{margin:0;font-weight:600}
+  .fb-cta p span{display:block;font-weight:400;font-size:.9rem;color:var(--muted)}
+  .fb-cta button.primary{margin-top:0;background:var(--mod)}
+  #feedback-card{border:2px solid var(--accent);box-shadow:0 6px 24px rgba(47,75,124,.18);padding-top:0;overflow:hidden;scroll-margin-top:16px}
+  .fb-head{background:var(--accent);color:#fff;margin:0 -20px 16px;padding:16px 20px}
+  .fb-head h2{margin:0 0 4px;font-size:1.3rem}
+  .fb-head p{margin:0;font-size:.92rem;opacity:.9}
+  .fb-badge{display:inline-block;background:#fff;color:var(--accent);font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border-radius:999px;margin-bottom:8px}
+  #submitFb{width:100%;font-size:1.05rem;padding:14px 18px}
+  #feedback-card.pulse{animation:fbPulse 1.2s ease-out 2}
+  @keyframes fbPulse{0%{box-shadow:0 0 0 0 rgba(47,75,124,.55)}100%{box-shadow:0 0 0 18px rgba(47,75,124,0)}}
+  .fb-float{position:fixed;right:16px;bottom:16px;z-index:10;background:var(--mod);color:#fff;border:0;border-radius:999px;padding:12px 20px;font:inherit;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+  .fb-float:hover{filter:brightness(1.08)}
+  @media(prefers-reduced-motion:reduce){#feedback-card.pulse{animation:none}}
   footer{margin-top:32px;font-size:.8rem;color:var(--muted);text-align:center}
   .hidden{display:none}
 </style>
@@ -99,6 +115,10 @@
 
     <div class="hidden" id="step-result">
       <div class="rating" id="ratingBox"><div>Overall risk</div><div class="lvl" id="ratingLvl"></div><div id="ratingSub"></div></div>
+      <div class="fb-cta" id="fbCta">
+        <p>Help us test this prototype: did the check change your plan?<span>3 quick questions, about 30 seconds.</span></p>
+        <button type="button" class="primary" id="fbCtaBtn">Give feedback &darr;</button>
+      </div>
       <div class="card"><h2>Breakdown</h2><div id="bars"></div></div>
       <div class="card" id="flagsCard"><h2>Red flags</h2><ul id="flags"></ul></div>
       <div class="card"><h2>Before you go ahead</h2><ul id="actions"></ul></div>
@@ -109,8 +129,11 @@
 
       <!-- FEEDBACK CARD -->
       <div class="card" id="feedback-card">
-        <h2>Test feedback (for our prototype evaluation)</h2>
-        <p class="hint">Help us improve Critical Colleague by sharing a quick reaction to your check.</p>
+        <div class="fb-head">
+          <span class="fb-badge">Your feedback &middot; 30 seconds</span>
+          <h2>How did this check work for you?</h2>
+          <p>We are testing this prototype. Your answer tells us whether it actually helps.</p>
+        </div>
 
         <div class="fb-grid">
           <div>
@@ -141,6 +164,7 @@
         <div class="status-msg" id="fbStatus"></div>
       </div>
     </div>
+    <button type="button" class="fb-float hidden" id="fbFloat">&#9733; Give feedback</button>
   </section>
 
   <!-- PROMPT -->
@@ -172,7 +196,7 @@
     </div>
   </section>
 
-  <footer>Prototype v0.3 &middot; Created with AI assistance (Claude Opus 5.5, Anthropic) &middot; Review before use.</footer>
+  <footer>Prototype v0.4&middot; Created with AI assistance (Claude Opus 5.5, Anthropic) &middot; Review before use.</footer>
 </main>
 
 <script>
@@ -384,10 +408,37 @@ function showResult(){
   $("fbStatus").textContent = "";
   $("submitFb").disabled = false;
   $("submitFb").textContent = "Submit feedback";
+  fbDone = false;
+  $("fbCta").classList.remove("hidden");
+  updateFbFloat();
   window.scrollTo(0,0);
 }
 
-$("restart").onclick = function(){ $("step-result").classList.add("hidden"); $("step-intro").classList.remove("hidden"); window.scrollTo(0,0); };
+$("restart").onclick = function(){ $("step-result").classList.add("hidden"); $("step-intro").classList.remove("hidden"); updateFbFloat(); window.scrollTo(0,0); };
+
+/* Feedback prominence: CTA under the rating, floating button, highlight on arrival */
+var fbDone = false, fbInView = false;
+function updateFbFloat(){
+  var onResults = !$("step-result").classList.contains("hidden") && !$("tab-check").classList.contains("hidden");
+  $("fbFloat").classList.toggle("hidden", !onResults || fbDone || fbInView);
+}
+function goToFeedback(){
+  var card = $("feedback-card");
+  card.scrollIntoView({behavior:"smooth", block:"start"});
+  card.classList.remove("pulse");
+  void card.offsetWidth;
+  card.classList.add("pulse");
+  setTimeout(function(){ $("fbChanged").focus({preventScroll:true}); }, 600);
+}
+$("fbCtaBtn").onclick = goToFeedback;
+$("fbFloat").onclick = goToFeedback;
+if("IntersectionObserver" in window){
+  new IntersectionObserver(function(entries){
+    fbInView = entries[0].isIntersecting;
+    updateFbFloat();
+  }, {threshold:0.25}).observe($("feedback-card"));
+}
+document.querySelectorAll(".tab").forEach(function(t){ t.addEventListener("click", updateFbFloat); });
 function copyText(text,btn){
   navigator.clipboard.writeText(text).then(function(){
     var o = btn.textContent;
@@ -505,6 +556,9 @@ $("submitFb").onclick = async function(){
 
     setFbStatus("Thank you! Your feedback has been recorded.", true);
     btn.textContent = "Feedback submitted";
+    fbDone = true;
+    $("fbCta").classList.add("hidden");
+    updateFbFloat();
   } catch(e){
     setFbStatus("Could not submit feedback: " + e.message, false);
     btn.disabled = false;
