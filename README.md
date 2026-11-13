@@ -1,57 +1,49 @@
 # ClearAI Feedback Worker
 
-This repository now contains a Cloudflare Worker setup for storing external feedback without requiring a fine-grained GitHub token.
+This repository includes a Cloudflare Worker setup for storing external feedback without requiring a GitHub fine-grained token.
 
-## What this does
+## Setup
 
-- The frontend sends feedback to a Cloudflare API endpoint.
-- The Cloudflare Worker validates the payload.
-- The Worker writes to a Cloudflare D1 database.
-- Your team can export the rows later as CSV or open them in a spreadsheet.
+1. Create a D1 database in Cloudflare:
 
-## Files
-
-- `worker.js` — Cloudflare Worker logic
-- `wrangler.toml` — Cloudflare deployment config
-- `schema.sql` — D1 database schema
-- `index.html` — updated form logic to post to the Cloudflare endpoint
-
-## Cloudflare setup
-
-1. Create a D1 database:
-   
    ```bash
    wrangler d1 create clearai-feedback
    ```
 
-2. Copy the database ID into `wrangler.toml`.
+2. Copy the generated `database_id` and paste it into `wrangler.toml`.
 
-3. Apply the schema:
-   
+3. Create the schema:
+
    ```bash
    wrangler d1 execute clearai-feedback --file=schema.sql
    ```
 
-4. Deploy the worker:
-   
+4. Deploy the Worker:
+
    ```bash
    wrangler deploy
    ```
 
-5. Confirm the endpoint is reachable:
-   
+5. Optional: set secret keys for protection. In Cloudflare, set:
+
    ```bash
-   curl https://clearaiproject.clearai-alpha.workers.dev/healthz
+   wrangler secret put FEEDBACK_KEY
+   wrangler secret put TEAM_KEY
    ```
 
-6. Update the form endpoint if needed:
-   
-   In `index.html`, the worker endpoint defaults to:
-   
-   ```js
-   const FEEDBACK_ENDPOINT = "https://clearaiproject.clearai-alpha.workers.dev/api/feedback";
-   ```
+   Then the Worker will accept write requests only when the request contains the matching `X-Feedback-Key` header, and read access only when the `X-Team-Key` header is present.
 
-## Security note
+## Notes
 
-The frontend no longer requires a GitHub personal access token. External users only submit feedback to the worker endpoint. The Cloudflare Worker owns the database access.
+- The public feedback form no longer writes to GitHub.
+- It sends the payload to the Cloudflare Worker endpoint.
+- Your team can read the data centrally from the D1 database and export it as CSV later.
+- To keep the app simple, the default form endpoint is:
+
+  ```text
+  https://clearaiproject.clearai-alpha.workers.dev/api/feedback
+  ```
+
+## Security recommendation
+
+Do not store sensitive personal data in the feedback text field. Keep it to the structured fields and a short comment only.

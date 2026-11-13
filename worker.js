@@ -1,10 +1,10 @@
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env) {
     const url = new URL(request.url);
     const corsHeaders = {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization"
+      "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Feedback-Key, X-Team-Key"
     };
 
     if (request.method === "OPTIONS") {
@@ -12,7 +12,7 @@ export default {
     }
 
     if (url.pathname === "/healthz") {
-      return jsonResponse({ ok: true, status: "healthy" }, corsHeaders);
+      return jsonResponse({ ok: true, status: "healthy" }, corsHeaders, 200);
     }
 
     if (url.pathname !== "/api/feedback") {
@@ -20,6 +20,10 @@ export default {
     }
 
     if (request.method === "GET") {
+      if (env.TEAM_KEY && request.headers.get("x-team-key") !== env.TEAM_KEY) {
+        return jsonResponse({ ok: false, error: "Unauthorized" }, corsHeaders, 401);
+      }
+
       const rows = await env.DB.prepare(`
         SELECT *
         FROM feedback
@@ -32,6 +36,10 @@ export default {
 
     if (request.method !== "POST") {
       return jsonResponse({ ok: false, error: "Method not allowed" }, corsHeaders, 405);
+    }
+
+    if (env.FEEDBACK_KEY && request.headers.get("x-feedback-key") !== env.FEEDBACK_KEY) {
+      return jsonResponse({ ok: false, error: "Unauthorized" }, corsHeaders, 401);
     }
 
     try {
@@ -101,10 +109,7 @@ function normalizeFeedback(body) {
 }
 
 function toNullableNumber(value) {
-  if (value === undefined || value === null || value === "") {
-    return null;
-  }
-
+  if (value === undefined || value === null || value === "") return null;
   const num = Number(value);
   return Number.isFinite(num) ? num : null;
 }
