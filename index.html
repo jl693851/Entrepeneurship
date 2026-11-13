@@ -307,7 +307,7 @@
     $("qnum").textContent=`Question ${idx+1} of ${DIMENSIONS.length} · ${d.label}`;
     $("qtext").textContent=d.q;
     $("qcontext").innerHTML=d.kw[0].test(planText)?`<div class="context">${d.kw[1]}</div>`:"";
-    $("qopts").innerHTML=d.opts.map((o,i)=>`<label class="opt"><input type="radio" name="opt" value="${i}" ${answers[idx]===i?"checked":""><span>${o[0]}</span></label>`).join("");
+    $("qopts").innerHTML=d.opts.map((o,i)=>`<label class="opt"><input type="radio" name="opt" value="${i}" ${answers[idx]===i?"checked":""}><span>${o[0]}</span></label>`).join("");
     $("reason").value=reasons[idx]||"";
     $("back").style.visibility=idx===0?"hidden":"visible";
     $("next").textContent=idx===DIMENSIONS.length-1?"See my risk rating →":"Next →";
