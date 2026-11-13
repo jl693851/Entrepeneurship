@@ -54,7 +54,7 @@
     .facts li::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
 
     /* Nav */
-    .nav{display:flex; gap:24px; white-space:nowrap; overflow-x:auto; border-bottom:1px solid var(--rule); margin:0 0 28px}
+    .nav{display:flex; gap:24px; white-space:nowrap; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; border-bottom:1px solid var(--rule); margin:0 0 28px}
     .nav button{font:inherit; font-size:.97rem; font-weight:600; color:var(--muted); background:none; border:0; padding:12px 0; margin-bottom:-1px; border-bottom:2px solid transparent; cursor:pointer}
     .nav button:hover{color:var(--ink)}
     .nav button[aria-selected="true"]{color:var(--ink); border-bottom-color:var(--ink)}
