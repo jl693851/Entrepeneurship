@@ -75,3 +75,4 @@ A **custom GPT (or a pasted system prompt) that plays a critical colleague.**
 | 2026-11-10 | critical-colleague_v0.1.html | First prototype |
 | 2026-11-11 | CLAUDE.md | Context file created |
 | 2026-11-13 | index.html (v0.4, branch V1.1) | Feedback made more prominent: a banner under the rating, a floating "Give feedback" button, and a highlighted feedback card |
+| 2026-11-13 | index.html (v0.5, branch V1.1) | Replaced with the minimalist ClearAI redesign from `main`: yellow "Give feedback" button on every screen, feedback panel directly under the verdict, feedback sent to the Cloudflare Worker. v0.4 kept as `history/index_v0.4.html`. |
