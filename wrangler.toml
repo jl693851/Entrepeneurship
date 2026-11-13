@@ -5,4 +5,4 @@ compatibility_date = "2025-07-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "clearai-feedback"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "57d2a6db-0984-42db-9366-058435342ba2"
