@@ -10,16 +10,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&display=swap" rel="stylesheet">
   <style>
     :root{
-      --paper:#F4F5F2;       /* page */
-      --surface:#FFFFFF;     /* worksheet */
-      --ink:#18212C;         /* text, primary actions */
-      --muted:#5A6371;
-      --rule:#DADDD8;
-      --accent:#1F5C4A;      /* signed-off green */
-      --accent-soft:#E6EFEB;
-      --mark:#F5D547;        /* reviewer's highlighter: feedback only */
-      --mark-ink:#3A3000;
-      --mark-soft:#FCF3C4;
+      --paper:#F4F5F2; --surface:#FFFFFF; --ink:#18212C; --muted:#5A6371; --rule:#DADDD8;
+      --accent:#1F5C4A; --accent-soft:#E6EFEB;
+      --mark:#F5D547; --mark-ink:#3A3000; --mark-soft:#FCF3C4; --mark-line:#E3D38E; --mark-field:#FFFDF2; --mark-muted:#6B6235;
       --low:#2F7A55; --mod:#A86F00; --high:#B4442B; --crit:#8E1B2E;
       --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
       --sans:"Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -38,24 +31,28 @@
 
     /* Header */
     .site-head{position:sticky; top:0; z-index:20; background:rgba(244,245,242,.92); backdrop-filter:saturate(1.4) blur(8px); border-bottom:1px solid var(--rule)}
-    .site-head .wrap{display:flex; align-items:center; justify-content:space-between; height:60px}
+    .site-head .wrap{display:flex; align-items:center; justify-content:space-between; gap:12px; height:60px}
     .brand{display:flex; align-items:center; gap:10px; font-weight:700; font-size:1.05rem; letter-spacing:-.01em; text-decoration:none}
     .brand svg{display:block}
-    .fb-trigger{display:inline-flex; align-items:center; gap:8px; font:inherit; font-size:.95rem; font-weight:600; color:var(--mark-ink); background:var(--mark); border:1px solid #DDBE2E; border-radius:999px; padding:8px 16px 8px 13px; cursor:pointer}
+    .head-actions{display:flex; align-items:center; gap:6px}
+    .lang-switch{font:inherit; font-size:.92rem; font-weight:600; color:var(--muted); background:none; border:0; padding:8px 10px; border-radius:var(--r-sm); cursor:pointer}
+    .lang-switch:hover{color:var(--ink); background:#E9EBE7}
+    .fb-trigger{display:inline-flex; align-items:center; gap:8px; font:inherit; font-size:.95rem; font-weight:600; color:var(--mark-ink); background:var(--mark); border:1px solid #DDBE2E; border-radius:999px; padding:8px 16px 8px 13px; cursor:pointer; white-space:nowrap}
     .fb-trigger:hover{background:#F0CC2C}
     .fb-trigger svg{flex:none}
+    @media (max-width:400px){.fb-trigger{padding:8px 12px; font-size:.9rem} .fb-trigger svg{display:none} .brand{font-size:1rem}}
 
     /* Hero */
     .hero{padding:72px 0 36px}
-    h1{font-size:clamp(2.2rem, 5.2vw, 3.35rem); line-height:1.06; letter-spacing:-.035em; font-weight:700; margin:0 0 20px; max-width:15ch}
+    h1{font-size:clamp(2.2rem, 5.2vw, 3.35rem); line-height:1.06; letter-spacing:-.035em; font-weight:700; margin:0 0 20px; max-width:17ch; hyphens:manual}
     .lede{font-size:1.15rem; color:var(--muted); margin:0; max-width:56ch}
     .facts{display:flex; flex-wrap:wrap; gap:8px 22px; margin:26px 0 0; padding:0; list-style:none; font-size:.92rem; color:var(--muted)}
     .facts li{display:flex; align-items:center; gap:8px}
-    .facts li::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+    .facts li::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--accent); flex:none}
 
     /* Nav */
     .nav{display:flex; gap:24px; white-space:nowrap; overflow-x:auto; overflow-y:hidden; scrollbar-width:none; border-bottom:1px solid var(--rule); margin:0 0 28px}
-    .nav button{font:inherit; font-size:.97rem; font-weight:600; color:var(--muted); background:none; border:0; padding:12px 0; margin-bottom:-1px; border-bottom:2px solid transparent; cursor:pointer}
+    .nav button{font:inherit; font-size:.97rem; font-weight:600; color:var(--muted); background:none; border:0; padding:12px 0; border-bottom:2px solid transparent; cursor:pointer}
     .nav button:hover{color:var(--ink)}
     .nav button[aria-selected="true"]{color:var(--ink); border-bottom-color:var(--ink)}
 
@@ -66,14 +63,15 @@
     h2{font-size:1.3rem; letter-spacing:-.02em; margin:0 0 6px; font-weight:700}
     h3{font-size:1rem; margin:0 0 12px; font-weight:700}
     .sub{color:var(--muted); margin:0 0 22px; font-size:.97rem}
-    label.field{display:block; font-weight:600; margin:22px 0 8px}
-    textarea, input[type=text]{width:100%; font:inherit; font-size:1rem; color:var(--ink); background:var(--surface); border:1px solid #C9CDC7; border-radius:var(--r-sm); padding:12px 14px}
-    textarea:focus, input:focus{outline:none; border-color:var(--ink); box-shadow:0 0 0 3px rgba(24,33,44,.12)}
+    label.field, legend.field{display:block; font-weight:600; margin:22px 0 8px; padding:0}
+    textarea, input[type=text], input[type=email], select{width:100%; font:inherit; font-size:1rem; color:var(--ink); background:var(--surface); border:1px solid #C9CDC7; border-radius:var(--r-sm); padding:11px 14px}
+    select{appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%2318212C' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 14px center; padding-right:40px; cursor:pointer}
+    textarea:focus, input:focus, select:focus{outline:none; border-color:var(--ink); box-shadow:0 0 0 3px rgba(24,33,44,.12)}
     textarea{min-height:120px; resize:vertical}
+    fieldset{border:0; padding:0; margin:0; min-width:0}
     .hint{font-size:.88rem; color:var(--muted); margin:8px 0 0}
     .field-err{font-size:.9rem; color:var(--high); margin:8px 0 0}
 
-    /* Choice rows (radio) */
     .choices{display:grid; gap:8px}
     .choice{display:flex; gap:12px; align-items:flex-start; border:1px solid var(--rule); border-radius:var(--r-sm); padding:12px 14px; cursor:pointer; background:var(--surface)}
     .choice:hover{border-color:#AEB3AC}
@@ -81,7 +79,6 @@
     .choice:has(input:checked){border-color:var(--ink); box-shadow:inset 0 0 0 1px var(--ink)}
     .choice small{display:block; color:var(--muted); font-size:.88rem}
 
-    /* Buttons */
     .actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:26px}
     .btn{font:inherit; font-size:.98rem; font-weight:600; border-radius:var(--r-sm); padding:12px 20px; cursor:pointer; border:1px solid transparent}
     .btn-primary{background:var(--ink); color:#fff}
@@ -89,8 +86,7 @@
     .btn-quiet{background:transparent; color:var(--ink); border-color:#C9CDC7}
     .btn-quiet:hover{border-color:var(--ink)}
     .btn:disabled{opacity:.4; cursor:not-allowed}
-    .btn-link{background:none; border:0; padding:0; font:inherit; font-size:.9rem; color:var(--muted); text-decoration:underline; text-underline-offset:3px; cursor:pointer}
-    .btn-link:hover{color:var(--ink)}
+    .btn-link{background:none; border:0; padding:0; font:inherit; font-size:.92rem; color:var(--ink); text-decoration:underline; text-underline-offset:3px; cursor:pointer}
     .spacer{flex:1}
 
     /* Questions */
@@ -112,34 +108,38 @@
     .verdict .why{font-size:1.08rem; margin:0; max-width:52ch}
     .verdict .meta{font-size:.88rem; color:var(--muted); margin:14px 0 0}
     .bars{display:grid; gap:12px; margin-top:4px}
-    .bar-row{display:grid; grid-template-columns:130px 1fr 34px; gap:14px; align-items:center; font-size:.95rem}
+    .bar-row{display:grid; grid-template-columns:140px 1fr 34px; gap:14px; align-items:center; font-size:.95rem}
     .bar{height:8px; background:#ECEDEA; border-radius:999px; overflow:hidden}
     .bar div{height:100%; border-radius:999px}
     .bar-row .v{color:var(--muted); font-variant-numeric:tabular-nums; text-align:right}
-    @media (max-width:480px){.bar-row{grid-template-columns:96px 1fr 30px; gap:10px}}
+    @media (max-width:480px){.bar-row{grid-template-columns:104px 1fr 30px; gap:10px}}
     .list{margin:0; padding-left:20px}
     .list li{margin:10px 0}
     .flags li{color:var(--high); font-weight:500}
     pre{white-space:pre-wrap; font-family:var(--sans); font-size:.9rem; background:#F7F8F6; border:1px solid var(--rule); border-radius:var(--r-sm); padding:16px; max-height:360px; overflow:auto; margin:0}
-    .two{display:grid; grid-template-columns:1fr 1fr; gap:20px}
-    @media (max-width:640px){.two{grid-template-columns:1fr}}
 
     /* Feedback: the one loud thing */
+    .fb-callout{display:flex; gap:16px 24px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:var(--mark); color:var(--mark-ink); border-radius:var(--r-md); padding:18px 22px; margin-bottom:20px}
+    .fb-callout p{margin:0; font-weight:600; max-width:44ch}
+    .fb-callout .btn{background:var(--ink); color:#fff}
     .fb{background:var(--mark-soft); border:1px solid #EAD27A; border-top:6px solid var(--mark); border-radius:var(--r-md); padding:30px 32px; margin-bottom:20px}
     @media (max-width:560px){.fb{padding:24px 18px}}
     .fb h2{font-size:1.45rem}
     .fb .sub{color:#5C5428}
-    .fb .choice{background:#FFFDF2; border-color:#E3D38E}
-    .fb .choice:hover{border-color:#B9A443}
-    .fb .q{font-weight:600; margin:24px 0 10px}
-    .scale{display:grid; grid-template-columns:repeat(5,1fr); gap:6px; max-width:380px}
+    .fb-sec{border-top:1px solid var(--mark-line); padding-top:6px; margin-top:26px}
+    .fb-sec:first-of-type{border-top:0; margin-top:0; padding-top:0}
+    .fb-sec > h3{font-size:.95rem; color:var(--mark-muted); margin:18px 0 0; font-weight:600}
+    .fb label.field{margin:16px 0 6px; font-size:.98rem}
+    .fb input[type=text], .fb input[type=email], .fb select{background-color:var(--mark-field); border-color:var(--mark-line)}
+    .fb .hint, .fb .scale-ends{color:var(--mark-muted)}
+    .scale{display:grid; grid-template-columns:repeat(10,1fr); gap:5px}
     .scale label{position:relative}
     .scale input{position:absolute; opacity:0; inset:0; margin:0; cursor:pointer}
-    .scale span{display:grid; place-items:center; height:44px; border:1px solid #E3D38E; background:#FFFDF2; border-radius:var(--r-sm); font-weight:600; cursor:pointer}
+    .scale span{display:grid; place-items:center; height:42px; border:1px solid var(--mark-line); background:var(--mark-field); border-radius:var(--r-sm); font-weight:600; font-size:.95rem; cursor:pointer; font-variant-numeric:tabular-nums}
     .scale input:checked + span{background:var(--ink); border-color:var(--ink); color:#fff}
     .scale input:focus-visible + span{outline:2px solid var(--ink); outline-offset:2px}
-    .scale-ends{display:flex; justify-content:space-between; max-width:380px; font-size:.82rem; color:#6B6235; margin-top:6px}
-    .fb textarea{min-height:90px; background:#FFFDF2; border-color:#E3D38E}
+    .scale-ends{display:flex; justify-content:space-between; font-size:.82rem; margin-top:6px}
+    @media (max-width:420px){.scale{gap:3px} .scale span{height:38px; font-size:.88rem}}
     .fb-done{display:flex; gap:14px; align-items:flex-start}
     .fb-done svg{flex:none; margin-top:3px}
     .status{font-size:.92rem; margin:14px 0 0}
@@ -148,16 +148,22 @@
     .home-note{display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap; border:1px dashed #D9C46A; background:var(--mark-soft); border-radius:var(--r-md); padding:16px 20px; margin:8px 0 20px; font-size:.95rem}
     .home-note p{margin:0}
 
-    /* Dialog */
-    dialog{border:0; border-radius:var(--r-md); padding:0; width:min(520px, calc(100vw - 32px)); background:var(--mark-soft); color:var(--ink); box-shadow:0 24px 64px rgba(24,33,44,.28)}
+    /* Dialogs */
+    dialog{border:0; border-radius:var(--r-md); padding:0; width:min(560px, calc(100vw - 24px)); max-height:calc(100dvh - 24px); background:var(--mark-soft); color:var(--ink); box-shadow:0 24px 64px rgba(24,33,44,.28)}
     dialog::backdrop{background:rgba(24,33,44,.45)}
     dialog[open]{animation:pop .18s ease-out}
     @keyframes pop{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
     dialog .fb{margin:0; border:0; border-top:6px solid var(--mark); border-radius:var(--r-md)}
-    #dlgTitle{padding-right:36px}
-    .x{position:absolute; top:16px; right:14px; background:none; border:0; font-size:1.5rem; line-height:1; color:#6B6235; cursor:pointer; padding:4px 8px; border-radius:var(--r-sm)}
+    #fbDialog h2{padding-right:36px}
+    .x{position:absolute; top:16px; right:14px; background:none; border:0; font-size:1.5rem; line-height:1; color:var(--mark-muted); cursor:pointer; padding:4px 8px; border-radius:var(--r-sm)}
+    #langDialog{background:var(--surface); width:min(420px, calc(100vw - 24px))}
+    .lang-pick{padding:30px 28px 28px}
+    .lang-pick h2{font-size:1.25rem; margin:0 0 4px}
+    .lang-pick p{color:var(--muted); margin:0 0 22px; font-size:.95rem}
+    .lang-pick .opts{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    .lang-pick button{font:inherit; font-weight:600; font-size:1.05rem; padding:16px; border:1px solid #C9CDC7; background:var(--surface); color:var(--ink); border-radius:var(--r-sm); cursor:pointer}
+    .lang-pick button:hover{border-color:var(--ink)}
 
-    /* About */
     .prose p, .prose li{max-width:62ch}
     .prose h3{margin-top:26px}
     .prose h3:first-child{margin-top:0}
@@ -169,58 +175,55 @@
 <body>
   <header class="site-head">
     <div class="wrap">
-      <a class="brand" href="./" aria-label="ClearAI home">
+      <a class="brand" href="./" aria-label="ClearAI">
         <svg width="26" height="26" viewBox="0 0 26 26" aria-hidden="true"><rect width="26" height="26" rx="6" fill="#18212C"/><path d="M7.5 13.5l3.6 3.6 7.4-8.2" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         ClearAI
       </a>
-      <button class="fb-trigger" id="fbTrigger" type="button">
-        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3.5A1.5 1.5 0 0 1 3.5 2h9A1.5 1.5 0 0 1 14 3.5v6a1.5 1.5 0 0 1-1.5 1.5H7l-3.2 2.6c-.33.27-.8.03-.8-.39V11h0A1.5 1.5 0 0 1 2 9.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-        Give feedback
-      </button>
+      <div class="head-actions">
+        <button class="lang-switch" id="langSwitch" type="button"></button>
+        <button class="fb-trigger" id="fbTrigger" type="button">
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3.5A1.5 1.5 0 0 1 3.5 2h9A1.5 1.5 0 0 1 14 3.5v6a1.5 1.5 0 0 1-1.5 1.5H7l-3.2 2.6c-.33.27-.8.03-.8-.39V11h0A1.5 1.5 0 0 1 2 9.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          <span data-t="giveFeedback"></span>
+        </button>
+      </div>
     </div>
   </header>
 
   <main class="wrap">
     <section class="hero">
-      <h1>Check your AI plan before you rely on it.</h1>
-      <p class="lede">Describe how you want to use AI for a task. ClearAI asks the five questions a careful colleague would, pushes back on weak answers, and rates the risk.</p>
-      <ul class="facts">
-        <li>About 3 minutes</li>
-        <li>No sign-up</li>
-        <li>Runs in your browser; your plan is only sent if you share feedback</li>
-      </ul>
+      <h1 data-t="h1"></h1>
+      <p class="lede" data-t="lede"></p>
+      <ul class="facts"><li data-t="fact1"></li><li data-t="fact2"></li><li data-t="fact3"></li></ul>
     </section>
 
-    <nav class="nav" role="tablist" aria-label="Sections">
-      <button role="tab" aria-selected="true" data-tab="check">Run a check</button>
-      <button role="tab" aria-selected="false" data-tab="prompt">Prompt version</button>
-      <button role="tab" aria-selected="false" data-tab="about">How it works</button>
+    <nav class="nav" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="check" data-t="tabCheck"></button>
+      <button role="tab" aria-selected="false" data-tab="about" data-t="tabAbout"></button>
     </nav>
 
     <section id="tab-check">
       <div class="sheet" id="step-intro">
-        <h2>Your plan</h2>
-        <p class="sub">Describe it without pasting real confidential data. A description is enough.</p>
-        <label class="field" for="plan">What is the task, and how will AI be used?</label>
-        <textarea id="plan" placeholder="For example: I want to summarise customer support tickets with ChatGPT, then send the draft to a team lead for approval."></textarea>
-        <p class="hint">Be specific: which tool, what goes in, what comes out, and where the output goes.</p>
-        <p class="field-err hidden" id="planErr">Add at least one full sentence. Vague plans get vague answers.</p>
-
-        <fieldset style="border:0; padding:0; margin:0">
-          <legend class="field" style="display:block; font-weight:600; margin:24px 0 10px; padding:0">Where does the output end up?</legend>
-          <div class="choices" id="stakes">
-            <label class="choice"><input type="radio" name="stakes" value="1"><span>Only for me<small>Notes, brainstorming, a personal draft</small></span></label>
-            <label class="choice"><input type="radio" name="stakes" value="2" checked><span>Shared internally<small>Team docs, internal workflows</small></span></label>
-            <label class="choice"><input type="radio" name="stakes" value="3"><span>Outside the organisation<small>Customers, partners, the public, a graded submission</small></span></label>
-            <label class="choice"><input type="radio" name="stakes" value="4"><span>Decisions about people, money, health or law<small>Hiring, grading, approvals, advice</small></span></label>
+        <h2 data-t="planTitle"></h2>
+        <p class="sub" data-t="planSub"></p>
+        <label class="field" for="plan" data-t="planLabel"></label>
+        <textarea id="plan" maxlength="2000" data-t-ph="planPh"></textarea>
+        <p class="hint" data-t="planHint"></p>
+        <p class="field-err hidden" id="planErr" data-t="planErr"></p>
+        <fieldset>
+          <legend class="field" style="margin-top:24px" data-t="stakesLegend"></legend>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="stakes" value="1"><span><span data-t="st1"></span><small data-t="st1s"></small></span></label>
+            <label class="choice"><input type="radio" name="stakes" value="2" checked><span><span data-t="st2"></span><small data-t="st2s"></small></span></label>
+            <label class="choice"><input type="radio" name="stakes" value="3"><span><span data-t="st3"></span><small data-t="st3s"></small></span></label>
+            <label class="choice"><input type="radio" name="stakes" value="4"><span><span data-t="st4"></span><small data-t="st4s"></small></span></label>
           </div>
         </fieldset>
-        <div class="actions"><button class="btn btn-primary" id="start" type="button">Start the five questions</button></div>
+        <div class="actions"><button class="btn btn-primary" id="start" type="button" data-t="start"></button></div>
       </div>
 
       <div class="home-note" id="homeNote">
-        <p>ClearAI is a student prototype. Tell us what to fix, even before you try it.</p>
-        <button class="btn-link" type="button" data-open-feedback>Give feedback</button>
+        <p data-t="homeNote"></p>
+        <button class="btn-link" type="button" data-open-feedback data-t="giveFeedback"></button>
       </div>
 
       <div class="sheet hidden" id="step-q">
@@ -228,242 +231,552 @@
         <p class="question" id="qtext"></p>
         <div id="qcontext"></div>
         <div class="choices" id="qopts" role="radiogroup" aria-labelledby="qtext"></div>
-        <div class="pushback hidden" id="pushback" aria-live="polite"><p><span class="who">Your colleague replies</span><span id="pushtext"></span></p></div>
-        <label class="field" for="reason">Your reasoning <span style="font-weight:400; color:var(--muted)">(optional)</span></label>
-        <textarea id="reason" style="min-height:80px" placeholder="Putting it into words is half the exercise."></textarea>
+        <div class="pushback hidden" id="pushback" aria-live="polite"><p><span class="who" data-t="pushWho"></span><span id="pushtext"></span></p></div>
+        <label class="field" for="reason"><span data-t="reasonLabel"></span> <span style="font-weight:400; color:var(--muted)" data-t="optional"></span></label>
+        <textarea id="reason" maxlength="1000" style="min-height:80px" data-t-ph="reasonPh"></textarea>
         <div class="actions">
-          <button class="btn btn-quiet" id="back" type="button">Back</button>
+          <button class="btn btn-quiet" id="back" type="button" data-t="back"></button>
           <span class="spacer"></span>
-          <button class="btn btn-primary" id="next" type="button" disabled>Next question</button>
+          <button class="btn btn-primary" id="next" type="button" disabled></button>
         </div>
       </div>
 
       <div class="hidden" id="step-result">
         <div class="sheet verdict" id="verdict">
-          <p class="kicker">Overall risk</p>
+          <p class="kicker" data-t="overall"></p>
           <p class="level" id="ratingLvl"></p>
           <p class="why" id="ratingSub"></p>
           <p class="meta" id="ratingMeta"></p>
         </div>
+        <div class="fb-callout" id="fbCallout">
+          <p data-t="calloutText"></p>
+          <button class="btn" type="button" id="calloutBtn" data-t="calloutBtn"></button>
+        </div>
+        <div class="sheet"><h3 data-t="breakdown"></h3><div class="bars" id="bars"></div></div>
+        <div class="sheet" id="flagsCard"><h3 data-t="redFlags"></h3><ul class="list flags" id="flags"></ul></div>
+        <div class="sheet"><h3 data-t="beforeYouGo"></h3><ul class="list" id="actions"></ul></div>
 
-        <!-- Feedback sits directly under the verdict so it can't be scrolled past. -->
-        <section class="fb" id="feedback-card" aria-labelledby="fbTitle">
-          <div id="fbForm">
-            <h2 id="fbTitle">Did this check change your plan?</h2>
-            <p class="sub">Your answer is how we learn whether ClearAI works. It takes ten seconds.</p>
-            <div class="choices" id="fbChanged">
-              <label class="choice"><input type="radio" name="fbChanged" value="Yes – changed my plan"><span>Yes, I will change my plan</span></label>
-              <label class="choice"><input type="radio" name="fbChanged" value="Partially – added a check"><span>Partly, I will add a review step</span></label>
-              <label class="choice"><input type="radio" name="fbChanged" value="No – kept plan as is"><span>No, I will go ahead as planned</span></label>
-              <label class="choice"><input type="radio" name="fbChanged" value="Stopped – won't use AI here"><span>I won’t use AI for this</span></label>
-            </div>
-            <p class="q" id="fbHelpLabel">How useful were the questions and pushback?</p>
-            <div class="scale" role="radiogroup" aria-labelledby="fbHelpLabel" id="fbHelp"></div>
-            <div class="scale-ends"><span>Not useful</span><span>Very useful</span></div>
-            <label class="field" for="fbComment">What felt realistic, annoying or missing? <span style="font-weight:400">(optional)</span></label>
-            <textarea id="fbComment" placeholder="For example: question 2 made me realise I don’t check citations."></textarea>
-            <p class="hint" style="color:#6B6235">Please leave out names and confidential details. Your plan and scores are sent with your feedback.</p>
-            <div class="actions">
-              <button class="btn btn-primary" id="submitFb" type="button" disabled>Send feedback</button>
-              <button class="btn-link" id="downloadCsv" type="button">Download a copy (CSV)</button>
-            </div>
-            <p class="status hidden" id="fbStatus" role="status"></p>
-          </div>
-          <div class="fb-done hidden" id="fbDone">
-            <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="11" fill="#18212C"/><path d="M6.5 11.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <div><h2 style="font-size:1.2rem">Feedback sent</h2><p class="sub" style="margin:0">Thank you. Every answer goes straight to the team building ClearAI.</p></div>
-          </div>
-        </section>
+        <section class="fb" id="feedback-card" aria-labelledby="r-title"></section>
 
-        <div class="sheet"><h3>Breakdown</h3><div class="bars" id="bars"></div></div>
-        <div class="sheet" id="flagsCard"><h3>Red flags</h3><ul class="list flags" id="flags"></ul></div>
-        <div class="sheet"><h3>Before you go ahead</h3><ul class="list" id="actions"></ul></div>
-        <div class="sheet"><h3>Your summary</h3><pre id="summary"></pre>
+        <div class="sheet"><h3 data-t="summaryTitle"></h3><pre id="summary"></pre>
           <div class="actions">
-            <button class="btn btn-quiet" id="copySummary" type="button">Copy summary</button>
-            <button class="btn btn-primary" id="restart" type="button">Check another plan</button>
+            <button class="btn btn-quiet" id="copySummary" type="button" data-t="copySummary"></button>
+            <button class="btn btn-primary" id="restart" type="button" data-t="restart"></button>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section id="tab-prompt" class="hidden">
-      <div class="sheet">
-        <h2>Run ClearAI in your own AI tool</h2>
-        <p class="sub">Paste this into the instructions of a custom GPT or a Claude Project. That version asks follow-up questions and adapts to your answers; this page uses fixed questions with transparent scoring.</p>
-        <pre id="sysprompt"></pre>
-        <div class="actions"><button class="btn btn-primary" id="copyPrompt" type="button">Copy prompt</button></div>
       </div>
     </section>
 
     <section id="tab-about" class="hidden">
       <div class="sheet prose">
-        <h3>How the rating works</h3>
-        <ul class="list">
-          <li>Each of the five areas is scored from 0 (low risk) to 3 (high risk). “I don’t know” scores 3, because not knowing is itself the risk.</li>
-          <li>The total (0–15) is weighted by where the output ends up, from ×0.8 for personal use to ×1.4 for decisions about people, money, health or law.</li>
-          <li>Bands: under 4 is Low, under 8 Moderate, under 11 High, and 11 or more Critical.</li>
-          <li>Red-flag rules override the total. For example, sensitive data with no reviewer is at least High, however good the rest looks.</li>
-        </ul>
-        <h3>Known limits</h3>
-        <ul class="list">
-          <li>It rates your own answers. Optimistic answers produce optimistic ratings.</li>
-          <li>The context hints come from simple keyword matching. They can miss things or over-flag.</li>
-          <li>It is a thinking exercise, not a compliance or legal assessment (for example under GDPR or the EU AI Act).</li>
-        </ul>
-        <h3>Privacy</h3>
-        <ul class="list">
-          <li>The check runs entirely in your browser. Nothing is stored or sent while you answer.</li>
-          <li>If you send feedback, your plan description, scores and comments are stored by the ClearAI team for evaluating the prototype.</li>
-        </ul>
+        <h3 data-t="aboutH1"></h3>
+        <ul class="list"><li data-t="about1"></li><li data-t="about2"></li><li data-t="about3"></li><li data-t="about4"></li></ul>
+        <h3 data-t="aboutH2"></h3>
+        <ul class="list"><li data-t="about5"></li><li data-t="about6"></li><li data-t="about7"></li></ul>
+        <h3 data-t="aboutH3"></h3>
+        <ul class="list"><li data-t="about8"></li><li data-t="about9"></li><li data-t="about10"></li></ul>
       </div>
     </section>
   </main>
 
-  <dialog id="fbDialog" aria-labelledby="dlgTitle">
-    <section class="fb">
-      <button class="x" type="button" id="dlgClose" aria-label="Close">×</button>
-      <div id="dlgForm">
-        <h2 id="dlgTitle">Help us improve ClearAI</h2>
-        <p class="sub">What works, what’s confusing, what’s missing. Short answers are fine.</p>
-        <p class="q" id="dlgHelpLabel">How useful is ClearAI so far?</p>
-        <div class="scale" role="radiogroup" aria-labelledby="dlgHelpLabel" id="dlgHelp"></div>
-        <div class="scale-ends"><span>Not useful</span><span>Very useful</span></div>
-        <label class="field" for="dlgComment">Your feedback</label>
-        <textarea id="dlgComment" placeholder="For example: I wasn’t sure what to write in the plan field."></textarea>
-        <p class="hint" style="color:#6B6235">Please leave out names and confidential details.</p>
-        <div class="actions"><button class="btn btn-primary" id="dlgSubmit" type="button" disabled>Send feedback</button></div>
-        <p class="status hidden" id="dlgStatus" role="status"></p>
+  <dialog id="fbDialog" aria-labelledby="d-title">
+    <section class="fb" id="dialog-card"></section>
+  </dialog>
+
+  <dialog id="langDialog" aria-labelledby="langTitle">
+    <div class="lang-pick">
+      <h2 id="langTitle">Choose your language</h2>
+      <p>Sprache wählen</p>
+      <div class="opts">
+        <button type="button" data-lang="en" lang="en">English</button>
+        <button type="button" data-lang="de" lang="de">Deutsch</button>
       </div>
-      <div class="fb-done hidden" id="dlgDone">
-        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="11" fill="#18212C"/><path d="M6.5 11.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div><h2 style="font-size:1.2rem">Feedback sent</h2><p class="sub" style="margin:0 0 16px">Thank you. It goes straight to the team building ClearAI.</p>
-        <button class="btn btn-quiet" type="button" id="dlgDoneClose">Close</button></div>
-      </div>
-    </section>
+    </div>
   </dialog>
 
   <footer>
-    <div class="wrap">
-      <span>ClearAI prototype v0.2. A thinking aid, not a compliance review.</span>
-      <span>Built with AI assistance (Claude Opus 5.5).</span>
-    </div>
+    <div class="wrap"><span data-t="foot1"></span><span data-t="foot2"></span></div>
   </footer>
 
   <script>
+  /* ---------- Content ---------- */
   const DIMENSIONS = [
-    {
-      key:"data", label:"Data",
-      q:"What exactly goes into the tool — and would you be fine if it showed up in tomorrow’s newspaper?",
-      kw:[/customer|client|employee|patient|student|applicant|cv|resume|salary|personal|contract|confidential|email|health|hr\b/i,
-          "Your description mentions content that likely contains personal or confidential data. Check whether the tool you use is approved and what it does with inputs."],
-      opts:[
-        ["Only public or self-written, non-sensitive content",0,"Fine — but check again in six months. Inputs tend to creep from ‘harmless’ to ‘just this once, the real file’."],
-        ["Internal information, in a company-approved tool with a data agreement",1,"Do you know what the agreement actually covers — training on your data, retention, where it’s stored? ‘Approved’ is not the same as ‘safe’."],
-        ["Internal or confidential information, in a tool I haven’t checked",2,"Then you are making a data-protection decision on behalf of your organisation without the information to make it."],
-        ["Personal data about people (customers, staff, applicants) or confidential data, in an unapproved tool",3,"This is the scenario most data-protection incidents start with. Could you anonymise or restrict it first?"],
-        ["I don’t know",3,"Not knowing what you put in is the problem. Find out before the first upload, not after."]
-      ],
-      fix:"Strip names and identifiers before input, or switch to an approved tool. Ask your data-protection contact one specific question: ‘May I put X into tool Y?’"
-    },
-    {
-      key:"errors", label:"Errors",
-      q:"Assume the output is confidently wrong in one place. How would you notice — and what happens if you don’t?",
-      kw:[/number|figure|financ|legal|law|translat|code|calculat|statistic|summar|citation|source|medical|dose/i,
-          "Your task involves numbers, facts, legal wording, code or summaries — areas where AI errors look plausible and are easy to miss."],
-      opts:[
-        ["Errors would be obvious and harmless",0,"Are you sure? The dangerous errors are the ones that look exactly like correct answers."],
-        ["I’d catch them with a normal check; consequences are minor and reversible",1,"What is a ‘normal check’ here, concretely? If you can’t name it, you won’t do it under time pressure."],
-        ["Errors could be subtle (facts, figures, wording) and hard to spot",2,"Then reading it once won’t catch them. What source would you compare against?"],
-        ["Errors would be hard to spot AND hard to undo once acted on",3,"This combination is where AI should draft at most, never decide. What’s your safety net?"],
-        ["I haven’t thought about it",3,"Then do it now: name the single worst plausible error and its consequence."]
-      ],
-      fix:"Write down the worst plausible error. Define a concrete check against an independent source (original data, the law text, a test run) for exactly that error type."
-    },
-    {
-      key:"check", label:"Who checks",
-      q:"Who reviews the output before it’s used — and do they know enough to disagree with it?",
-      kw:[/automat|directly|straight|without|bulk|batch|all of|every/i,
-          "Your description sounds like outputs may flow on with little or no human review."],
-      opts:[
-        ["A qualified person checks every output against sources",0,"Good. Does that person have the time — or will ‘check’ become ‘skim’ by week three?"],
-        ["I check it myself, and I know the subject well",1,"Self-review of something you asked for is weak: you see what you expected. Would a second pair of eyes be cheap here?"],
-        ["Spot checks or a quick skim",2,"A skim catches formatting, not fluent nonsense. Which outputs get skipped, and why those?"],
-        ["No one — it goes straight out",3,"Then the AI is effectively making the final call. Is that what you intend?"]
-      ],
-      fix:"Name the reviewer, define what they compare against, and budget their time. If nobody qualified can review, reduce the AI’s role to drafting."
-    },
-    {
-      key:"account", label:"Accountability",
-      q:"If this goes wrong, whose name is on it — and could that person explain how the result came about?",
-      kw:[/decid|decision|hiring|recruit|grade|assess|evaluat|approv|reject|score/i,
-          "Your task looks like it influences decisions about people or outcomes. ‘The AI suggested it’ will not hold up as a justification."],
-      opts:[
-        ["Clearly me (or a named owner), and I can explain and reproduce the reasoning",0,"Good. Can you also explain it to the person affected by it, in plain words?"],
-        ["Clear owner, but they couldn’t fully explain the AI’s part",1,"Owning what you can’t explain is a weak position. What would you say if challenged?"],
-        ["Shared or unclear between people or teams",2,"Shared responsibility usually means nobody’s. Who gets the call when it fails?"],
-        ["Nobody specifically / ‘the tool’",3,"Tools can’t be accountable. Someone will be held responsible — better to decide who now."]
-      ],
-      fix:"Name one owner. Make sure they can explain the result without referring to the AI, or document the prompt, inputs and checks so it is reconstructible."
-    },
-    {
-      key:"loss", label:"What you’d lose",
-      q:"What would you or your team stop learning, noticing or doing by handing this to AI?",
-      kw:[/learn|practi|write|analy|feedback|relationship|customer contact|thesis|assignment|essay|report/i,
-          "This task may build skills or relationships. Outsourcing it can be efficient now and costly later."],
-      opts:[
-        ["Nothing meaningful — routine work with no learning value",0,"Plausible. But routine tasks are often where newcomers learn the ropes. Is it routine for everyone?"],
-        ["Some practice, and I accept that deliberately",1,"Fine, if it stays a choice. How would you notice if the skill had faded?"],
-        ["A core skill, judgment, or relationship would weaken over time",2,"Then the short-term gain has a long-term price. Could AI support the task instead of doing it?"],
-        ["I haven’t considered it / it would replace the point of the task",3,"If the task exists to build understanding (e.g. coursework), AI doing it defeats its purpose."]
-      ],
-      fix:"Decide which part stays human on purpose (e.g. first draft, the key judgment, the client conversation). Use AI for critique or the second pass instead."
-    }
+    { key:"data",
+      kw:/customer|client|employee|patient|student|applicant|\bcv\b|resume|salary|personal|contract|confidential|e-?mail|health|\bhr\b|kunde|mitarbeit|schüler|bewerb|lebenslauf|gehalt|persönlich|personenbezogen|vertrag|vertraulich|gesundheit/i,
+      scores:[0,1,2,3,3],
+      en:{ label:"Data",
+        q:"What exactly goes into the tool — and would you be fine if it showed up in tomorrow’s newspaper?",
+        hint:"Your description mentions content that likely contains personal or confidential data. Check whether the tool you use is approved and what it does with inputs.",
+        opts:[
+          ["Only public or self-written, non-sensitive content","Fine — but check again in six months. Inputs tend to creep from ‘harmless’ to ‘just this once, the real file’."],
+          ["Internal information, in a company-approved tool with a data agreement","Do you know what the agreement actually covers — training on your data, retention, where it’s stored? ‘Approved’ is not the same as ‘safe’."],
+          ["Internal or confidential information, in a tool I haven’t checked","Then you are making a data-protection decision on behalf of your organisation without the information to make it."],
+          ["Personal data about people (customers, staff, applicants) or confidential data, in an unapproved tool","This is the scenario most data-protection incidents start with. Could you anonymise or restrict it first?"],
+          ["I don’t know","Not knowing what you put in is the problem. Find out before the first upload, not after."]],
+        fix:"Strip names and identifiers before input, or switch to an approved tool. Ask your data-protection contact one specific question: ‘May I put X into tool Y?’" },
+      de:{ label:"Daten",
+        q:"Was genau geben Sie in das Tool ein – und wäre es in Ordnung, wenn es morgen in der Zeitung stünde?",
+        hint:"Ihre Beschreibung erwähnt Inhalte, die wahrscheinlich personenbezogene oder vertrauliche Daten enthalten. Prüfen Sie, ob Ihr Tool freigegeben ist und was es mit Eingaben macht.",
+        opts:[
+          ["Nur öffentliche oder selbst geschriebene, unkritische Inhalte","In Ordnung – aber prüfen Sie es in sechs Monaten erneut. Eingaben wandern gern von „harmlos“ zu „nur dieses eine Mal, die echte Datei“."],
+          ["Interne Informationen in einem vom Unternehmen freigegebenen Tool mit Datenvereinbarung","Wissen Sie, was die Vereinbarung tatsächlich abdeckt – Training mit Ihren Daten, Speicherdauer, Speicherort? „Freigegeben“ heißt nicht „sicher“."],
+          ["Interne oder vertrauliche Informationen in einem Tool, das ich nicht geprüft habe","Dann treffen Sie eine Datenschutzentscheidung für Ihre Organisation, ohne die nötigen Informationen dafür zu haben."],
+          ["Personenbezogene Daten (Kunden, Mitarbeitende, Bewerber) oder vertrauliche Daten in einem nicht freigegebenen Tool","Mit genau diesem Szenario beginnen die meisten Datenschutzvorfälle. Können Sie die Daten vorher anonymisieren oder einschränken?"],
+          ["Weiß ich nicht","Nicht zu wissen, was Sie eingeben, ist das Problem. Klären Sie das vor dem ersten Upload, nicht danach."]],
+        fix:"Entfernen Sie Namen und Kennungen vor der Eingabe oder wechseln Sie zu einem freigegebenen Tool. Stellen Sie Ihrer Datenschutzstelle eine konkrete Frage: „Darf ich X in Tool Y eingeben?“" } },
+    { key:"errors",
+      kw:/number|figure|financ|legal|\blaw|translat|code|calculat|statistic|summar|citation|source|medical|dose|zahl|finanz|recht|gesetz|übersetz|berechn|statistik|zusammenfass|quelle|zitat|medizin|dosis/i,
+      scores:[0,1,2,3,3],
+      en:{ label:"Errors",
+        q:"Assume the output is confidently wrong in one place. How would you notice — and what happens if you don’t?",
+        hint:"Your task involves numbers, facts, legal wording, code or summaries — areas where AI errors look plausible and are easy to miss.",
+        opts:[
+          ["Errors would be obvious and harmless","Are you sure? The dangerous errors are the ones that look exactly like correct answers."],
+          ["I’d catch them with a normal check; consequences are minor and reversible","What is a ‘normal check’ here, concretely? If you can’t name it, you won’t do it under time pressure."],
+          ["Errors could be subtle (facts, figures, wording) and hard to spot","Then reading it once won’t catch them. What source would you compare against?"],
+          ["Errors would be hard to spot AND hard to undo once acted on","This combination is where AI should draft at most, never decide. What’s your safety net?"],
+          ["I haven’t thought about it","Then do it now: name the single worst plausible error and its consequence."]],
+        fix:"Write down the worst plausible error. Define a concrete check against an independent source (original data, the law text, a test run) for exactly that error type." },
+      de:{ label:"Fehler",
+        q:"Angenommen, das Ergebnis ist an einer Stelle selbstbewusst falsch. Wie würden Sie es bemerken – und was passiert, wenn nicht?",
+        hint:"Ihre Aufgabe umfasst Zahlen, Fakten, juristische Formulierungen, Code oder Zusammenfassungen – Bereiche, in denen KI-Fehler plausibel aussehen und leicht übersehen werden.",
+        opts:[
+          ["Fehler wären offensichtlich und harmlos","Sind Sie sicher? Gefährlich sind die Fehler, die genau wie richtige Antworten aussehen."],
+          ["Ich würde sie mit einer normalen Prüfung finden; die Folgen sind gering und umkehrbar","Was ist hier konkret eine „normale Prüfung“? Wenn Sie sie nicht benennen können, machen Sie sie unter Zeitdruck nicht."],
+          ["Fehler könnten subtil sein (Fakten, Zahlen, Formulierungen) und schwer zu erkennen","Dann reicht einmaliges Lesen nicht. Mit welcher Quelle würden Sie abgleichen?"],
+          ["Fehler wären schwer zu erkennen UND schwer rückgängig zu machen, sobald danach gehandelt wurde","In dieser Kombination sollte KI höchstens entwerfen, nie entscheiden. Was ist Ihr Sicherheitsnetz?"],
+          ["Darüber habe ich nicht nachgedacht","Dann tun Sie es jetzt: Benennen Sie den schlimmsten plausiblen Fehler und seine Folge."]],
+        fix:"Schreiben Sie den schlimmsten plausiblen Fehler auf. Legen Sie eine konkrete Prüfung gegen eine unabhängige Quelle fest (Originaldaten, Gesetzestext, Testlauf) – genau für diese Fehlerart." } },
+    { key:"check",
+      kw:/automat|directly|straight|without|bulk|batch|all of|every|direkt|ohne|massenhaft|alle |jede/i,
+      scores:[0,1,2,3],
+      en:{ label:"Who checks",
+        q:"Who reviews the output before it’s used — and do they know enough to disagree with it?",
+        hint:"Your description sounds like outputs may flow on with little or no human review.",
+        opts:[
+          ["A qualified person checks every output against sources","Good. Does that person have the time — or will ‘check’ become ‘skim’ by week three?"],
+          ["I check it myself, and I know the subject well","Self-review of something you asked for is weak: you see what you expected. Would a second pair of eyes be cheap here?"],
+          ["Spot checks or a quick skim","A skim catches formatting, not fluent nonsense. Which outputs get skipped, and why those?"],
+          ["No one — it goes straight out","Then the AI is effectively making the final call. Is that what you intend?"]],
+        fix:"Name the reviewer, define what they compare against, and budget their time. If nobody qualified can review, reduce the AI’s role to drafting." },
+      de:{ label:"Prüfung",
+        q:"Wer prüft das Ergebnis, bevor es verwendet wird – und weiß diese Person genug, um zu widersprechen?",
+        hint:"Ihre Beschreibung klingt, als könnten Ergebnisse mit wenig oder gar keiner menschlichen Prüfung weiterfließen.",
+        opts:[
+          ["Eine qualifizierte Person prüft jedes Ergebnis anhand von Quellen","Gut. Hat diese Person die Zeit dafür – oder wird aus „prüfen“ in Woche drei „überfliegen“?"],
+          ["Ich prüfe es selbst und kenne mich im Thema gut aus","Selbstprüfung ist schwach: Sie sehen, was Sie erwartet haben. Wäre ein zweites Paar Augen hier leicht zu haben?"],
+          ["Stichproben oder kurzes Überfliegen","Überfliegen findet Formatfehler, keinen flüssig formulierten Unsinn. Welche Ergebnisse werden übersprungen, und warum gerade die?"],
+          ["Niemand – es geht direkt raus","Dann trifft die KI faktisch die letzte Entscheidung. Ist das Ihre Absicht?"]],
+        fix:"Benennen Sie die prüfende Person, legen Sie fest, womit sie vergleicht, und planen Sie ihre Zeit ein. Wenn niemand Qualifiziertes prüfen kann, beschränken Sie die KI auf Entwürfe." } },
+    { key:"account",
+      kw:/decid|decision|hiring|recruit|grade|assess|evaluat|approv|reject|score|entscheid|einstell|rekrut|note|bewert|beurteil|genehmig|ablehn/i,
+      scores:[0,1,2,3],
+      en:{ label:"Accountability",
+        q:"If this goes wrong, whose name is on it — and could that person explain how the result came about?",
+        hint:"Your task looks like it influences decisions about people or outcomes. ‘The AI suggested it’ will not hold up as a justification.",
+        opts:[
+          ["Clearly me (or a named owner), and I can explain and reproduce the reasoning","Good. Can you also explain it to the person affected by it, in plain words?"],
+          ["Clear owner, but they couldn’t fully explain the AI’s part","Owning what you can’t explain is a weak position. What would you say if challenged?"],
+          ["Shared or unclear between people or teams","Shared responsibility usually means nobody’s. Who gets the call when it fails?"],
+          ["Nobody specifically / ‘the tool’","Tools can’t be accountable. Someone will be held responsible — better to decide who now."]],
+        fix:"Name one owner. Make sure they can explain the result without referring to the AI, or document the prompt, inputs and checks so it is reconstructible." },
+      de:{ label:"Verantwortung",
+        q:"Wenn etwas schiefgeht, wessen Name steht darauf – und könnte diese Person erklären, wie das Ergebnis zustande kam?",
+        hint:"Ihre Aufgabe beeinflusst offenbar Entscheidungen über Menschen oder Ergebnisse. „Die KI hat es vorgeschlagen“ hält als Begründung nicht stand.",
+        opts:[
+          ["Eindeutig ich (oder eine benannte Person), und ich kann die Begründung erklären und nachvollziehen","Gut. Können Sie es auch der betroffenen Person in einfachen Worten erklären?"],
+          ["Klare Verantwortung, aber die Person könnte den Anteil der KI nicht vollständig erklären","Etwas zu verantworten, das man nicht erklären kann, ist eine schwache Position. Was würden Sie sagen, wenn man Sie darauf anspricht?"],
+          ["Geteilt oder unklar zwischen Personen oder Teams","Geteilte Verantwortung heißt meist: niemandes. Wer bekommt den Anruf, wenn es schiefgeht?"],
+          ["Niemand bestimmtes / „das Tool“","Tools können keine Verantwortung tragen. Irgendwer wird zur Verantwortung gezogen – legen Sie besser jetzt fest, wer."]],
+        fix:"Benennen Sie eine verantwortliche Person. Stellen Sie sicher, dass sie das Ergebnis ohne Verweis auf die KI erklären kann, oder dokumentieren Sie Prompt, Eingaben und Prüfungen, sodass es nachvollziehbar ist." } },
+    { key:"loss",
+      kw:/learn|practi|write|analy|feedback|relationship|customer contact|thesis|assignment|essay|report|lern|übung|schreib|analys|beziehung|kundenkontakt|abschlussarbeit|hausarbeit|aufsatz|bericht/i,
+      scores:[0,1,2,3],
+      en:{ label:"What you’d lose",
+        q:"What would you or your team stop learning, noticing or doing by handing this to AI?",
+        hint:"This task may build skills or relationships. Outsourcing it can be efficient now and costly later.",
+        opts:[
+          ["Nothing meaningful — routine work with no learning value","Plausible. But routine tasks are often where newcomers learn the ropes. Is it routine for everyone?"],
+          ["Some practice, and I accept that deliberately","Fine, if it stays a choice. How would you notice if the skill had faded?"],
+          ["A core skill, judgment, or relationship would weaken over time","Then the short-term gain has a long-term price. Could AI support the task instead of doing it?"],
+          ["I haven’t considered it / it would replace the point of the task","If the task exists to build understanding (e.g. coursework), AI doing it defeats its purpose."]],
+        fix:"Decide which part stays human on purpose (e.g. first draft, the key judgment, the client conversation). Use AI for critique or the second pass instead." },
+      de:{ label:"Was verloren geht",
+        q:"Was würden Sie oder Ihr Team nicht mehr lernen, bemerken oder tun, wenn die KI diese Aufgabe übernimmt?",
+        hint:"Diese Aufgabe baut womöglich Fähigkeiten oder Beziehungen auf. Sie auszulagern kann jetzt effizient und später teuer sein.",
+        opts:[
+          ["Nichts Wesentliches – Routinearbeit ohne Lernwert","Plausibel. Aber gerade an Routineaufgaben lernen Neue oft das Handwerk. Ist es für alle Routine?"],
+          ["Etwas Übung, und das nehme ich bewusst in Kauf","In Ordnung, solange es eine bewusste Entscheidung bleibt. Woran würden Sie merken, dass die Fähigkeit nachgelassen hat?"],
+          ["Eine Kernfähigkeit, Urteilskraft oder Beziehung würde mit der Zeit schwächer","Dann hat der kurzfristige Gewinn einen langfristigen Preis. Könnte die KI die Aufgabe unterstützen, statt sie zu erledigen?"],
+          ["Darüber habe ich nicht nachgedacht / es würde den Zweck der Aufgabe ersetzen","Wenn die Aufgabe dem Verständnis dient (z. B. im Studium), verfehlt sie ihren Zweck, wenn die KI sie erledigt."]],
+        fix:"Legen Sie bewusst fest, welcher Teil menschlich bleibt (z. B. der erste Entwurf, die zentrale Einschätzung, das Kundengespräch). Nutzen Sie KI stattdessen für Kritik oder den zweiten Durchgang." } }
   ];
 
-  const STAKES = {1:{f:0.8,t:"personal use"},2:{f:1.0,t:"internal use"},3:{f:1.2,t:"external use"},4:{f:1.4,t:"decisions about people / money / health / law"}};
+  // Stored values stay in English so the exported data is consistent.
+  const STAKES = {
+    1:{f:0.8, t:"personal use",  en:"personal use", de:"persönliche Nutzung"},
+    2:{f:1.0, t:"internal use",  en:"internal use", de:"interne Nutzung"},
+    3:{f:1.2, t:"external use",  en:"external use", de:"externe Nutzung"},
+    4:{f:1.4, t:"decisions about people / money / health / law", en:"decisions about people, money, health or law", de:"Entscheidungen über Menschen, Geld, Gesundheit oder Recht"}
+  };
   const LEVELS = [
-    {max:4,name:"Low",color:"var(--low)",sub:"A reasonable plan. Keep the checks you described."},
-    {max:8,name:"Moderate",color:"var(--mod)",sub:"Workable, with specific gaps to close first."},
-    {max:11,name:"High",color:"var(--high)",sub:"Don’t go ahead as described. Fix the flagged areas first."},
-    {max:99,name:"Critical",color:"var(--crit)",sub:"Stop and redesign. Involve someone responsible for data, quality or compliance."}
+    {max:4,  name:"Low",      color:"var(--low)",  en:["Low","A reasonable plan. Keep the checks you described."], de:["Niedrig","Ein vernünftiger Plan. Behalten Sie die beschriebenen Prüfungen bei."]},
+    {max:8,  name:"Moderate", color:"var(--mod)",  en:["Moderate","Workable, with specific gaps to close first."], de:["Mittel","Machbar, aber mit konkreten Lücken, die Sie zuerst schließen sollten."]},
+    {max:11, name:"High",     color:"var(--high)", en:["High","Don’t go ahead as described. Fix the flagged areas first."], de:["Hoch","Setzen Sie es so nicht um. Beheben Sie zuerst die markierten Bereiche."]},
+    {max:99, name:"Critical", color:"var(--crit)", en:["Critical","Stop and redesign. Involve someone responsible for data, quality or compliance."], de:["Kritisch","Stoppen und neu planen. Beziehen Sie eine verantwortliche Person für Datenschutz, Qualität oder Compliance ein."]}
   ];
-  const SCORE_COLORS = ["var(--low)","var(--mod)","var(--high)","var(--crit)"];
+  const ROLES = ["Student (High school)","Apprentice","Student (University)","Professional (Employed)","Professional (Self Employed)"];
+
+  const T = {
+    en:{
+      switchTo:"Deutsch", giveFeedback:"Give feedback",
+      h1:"Check your AI plan before you rely on it.",
+      lede:"Describe how you want to use AI for a task. ClearAI asks the five questions a careful colleague would, pushes back on weak answers, and rates the risk.",
+      fact1:"About 3 minutes", fact2:"No sign-up", fact3:"Runs in your browser; your plan is only sent if you share feedback",
+      tabCheck:"Run a check", tabAbout:"How it works",
+      planTitle:"Your plan", planSub:"Describe it without pasting real confidential data. A description is enough.",
+      planLabel:"What is the task, and how will AI be used?",
+      planPh:"For example: I want to summarise customer support tickets with ChatGPT, then send the draft to a team lead for approval.",
+      planHint:"Be specific: which tool, what goes in, what comes out, and where the output goes.",
+      planErr:"Add at least one full sentence. Vague plans get vague answers.",
+      stakesLegend:"Where does the output end up?",
+      st1:"Only for me", st1s:"Notes, brainstorming, a personal draft",
+      st2:"Shared internally", st2s:"Team docs, internal workflows",
+      st3:"Outside the organisation", st3s:"Customers, partners, the public, a graded submission",
+      st4:"Decisions about people, money, health or law", st4s:"Hiring, grading, approvals, advice",
+      start:"Start the five questions",
+      homeNote:"ClearAI is a student prototype. Tell us what to improve, even before you try it.",
+      pushWho:"Your colleague replies", reasonLabel:"Your reasoning", optional:"(optional)", reasonPh:"Putting it into words is half the exercise.",
+      back:"Back", next:"Next question", seeRating:"See my rating",
+      overall:"Overall risk", meta:(s,st)=>`Score ${s}, weighted for ${st}.`,
+      calloutText:"How did this check work for you? A few short questions help us improve ClearAI.", calloutBtn:"Answer the feedback questions",
+      breakdown:"Breakdown", redFlags:"Red flags", beforeYouGo:"Before you go ahead",
+      noGaps:"No gaps flagged. Run the check again if the task, the data or the tool changes.",
+      summaryTitle:"Your summary", copySummary:"Copy summary", copied:"Copied", copyBlocked:"Copy blocked by browser", restart:"Check another plan",
+      flagA:"Sensitive or unknown data combined with weak or no review.",
+      flagB:"Output feeds decisions about people, money, health or law without solid review.",
+      flagC:"Errors would be hard to detect, and nobody checks.",
+      flagD:"No one is accountable for the result.",
+      flagE:"High-stakes decision, unclear owner, and risky data handling.",
+      flagDK:"You answered “don’t know” or “haven’t thought about it” for: ",
+      sumHead:"CLEARAI – AI PLAN CHECK", sumPlan:"Plan", sumUse:"Output used for", sumRisk:"Overall risk", sumScore:"score", sumReason:"Reasoning", sumFlags:"Red flags",
+      sumFoot:"Self-assessment, not a compliance review. Generated with a prototype built with AI assistance.",
+      aboutH1:"How the rating works",
+      about1:"Each of the five areas is scored from 0 (low risk) to 3 (high risk). “I don’t know” scores 3, because not knowing is itself the risk.",
+      about2:"The total (0–15) is weighted by where the output ends up, from ×0.8 for personal use to ×1.4 for decisions about people, money, health or law.",
+      about3:"Bands: under 4 is Low, under 8 Moderate, under 11 High, and 11 or more Critical.",
+      about4:"Red-flag rules override the total. For example, sensitive data with no reviewer is at least High, however good the rest looks.",
+      aboutH2:"Known limits",
+      about5:"It rates your own answers. Optimistic answers produce optimistic ratings.",
+      about6:"The context hints come from simple keyword matching. They can miss things or over-flag.",
+      about7:"It is a thinking exercise, not a compliance or legal assessment (for example under GDPR or the EU AI Act).",
+      aboutH3:"Privacy",
+      about8:"The check runs entirely in your browser. Nothing is stored or sent while you answer.",
+      about9:"If you send feedback after a check, your plan description, your answers to the five questions and your feedback are stored by the ClearAI team to evaluate the prototype. Only the team can see them.",
+      about10:"Your email address is optional. We only use it to ask follow-up questions about your feedback.",
+      foot1:"ClearAI prototype v0.6. A thinking aid, not a compliance review.", foot2:"Built with AI assistance (Claude Opus 5.5).",
+      fbTitle:"Help us improve ClearAI", fbSub:"Short answers are enough. Every question is optional.",
+      secYou:"About you", secCheck:"About this check", secClear:"About ClearAI", secContact:"Stay in touch",
+      f_role:"What is your current role?", choose:"Choose…",
+      roles:["Student (high school)","Apprentice","Student (university)","Professional (employed)","Professional (self-employed)"],
+      f_role_description:"Describe your role in a few words", ph_role_description:"e.g. Business & Administration student at FH Münster",
+      f_plan_change:"Did the feedback change your plan? If so, how?", ph_plan_change:"e.g. I’ll ask a colleague to review the draft first.",
+      f_perception:"How did you find the feedback?", ph_perception:"e.g. helpful, unnecessary, too strict, too easy on me",
+      f_implementation:"Will you act on the feedback? What, and how?", ph_implementation:"e.g. I’ll remove customer names before pasting.",
+      f_used_reasoning:"Did you use the “Your reasoning” field to explain your answers?", yes:"Yes", no:"No",
+      f_reasoning_usage:"How did you use it?", ph_reasoning_usage:"e.g. to note why I picked an option",
+      f_ease_rating:"How easy was ClearAI to use?", easeLow:"1 = very hard", easeHigh:"10 = very easy",
+      f_use_again:"Would you use ClearAI again?", ph_use_again:"e.g. yes, before every new AI project",
+      f_recommend:"Would you recommend ClearAI? If so, to whom?", ph_recommend:"e.g. to my team lead",
+      f_missing:"What is missing in ClearAI?", ph_missing:"e.g. questions for my field of work",
+      f_inspiration:"Any ideas for further features?", ph_inspiration:"e.g. a reminder to re-check my plan later",
+      f_willing_to_pay:"Which feature would you pay for?", ph_willing_to_pay:"e.g. a version built around my company’s AI policy",
+      f_email:"Email address (optional)", ph_email:"name@example.com",
+      emailHint:"Only if we may contact you with follow-up questions. We use it for nothing else.",
+      fbNoteCheck:"Please leave out confidential details. Your plan and your answers to the five questions are saved with your feedback.",
+      fbNoteGeneral:"Please leave out confidential details.",
+      send:"Send feedback", sending:"Sending…", sentTitle:"Feedback sent", sentText:"Thank you. It goes straight to the team building ClearAI.", close:"Close",
+      emailErr:"Check the email address, or leave the field empty.",
+      sendErr:m=>`Feedback was not sent: ${m}. Check your connection and try again.`
+    },
+    de:{
+      switchTo:"English", giveFeedback:"Feedback geben",
+      h1:"Prüfen Sie Ihren KI-Plan, bevor Sie sich darauf verlassen.",
+      lede:"Beschreiben Sie, wie Sie KI für eine Aufgabe nutzen wollen. ClearAI stellt die fünf Fragen, die ein kritisches Gegenüber stellen würde, hakt bei schwachen Antworten nach und bewertet das Risiko.",
+      fact1:"Etwa 3 Minuten", fact2:"Keine Anmeldung", fact3:"Läuft in Ihrem Browser; Ihr Plan wird nur mit Ihrem Feedback gesendet",
+      tabCheck:"Prüfung starten", tabAbout:"So funktioniert es",
+      planTitle:"Ihr Plan", planSub:"Beschreiben Sie ihn, ohne echte vertrauliche Daten einzufügen. Eine Beschreibung genügt.",
+      planLabel:"Was ist die Aufgabe, und wie wird KI eingesetzt?",
+      planPh:"Zum Beispiel: Ich möchte Support-Tickets von Kunden mit ChatGPT zusammenfassen und den Entwurf zur Freigabe an die Teamleitung schicken.",
+      planHint:"Seien Sie konkret: welches Tool, was hineingeht, was herauskommt und wohin das Ergebnis geht.",
+      planErr:"Schreiben Sie mindestens einen ganzen Satz. Vage Pläne bekommen vage Antworten.",
+      stakesLegend:"Wo landet das Ergebnis?",
+      st1:"Nur bei mir", st1s:"Notizen, Brainstorming, ein persönlicher Entwurf",
+      st2:"Intern geteilt", st2s:"Team-Dokumente, interne Abläufe",
+      st3:"Außerhalb der Organisation", st3s:"Kunden, Partner, Öffentlichkeit, eine benotete Abgabe",
+      st4:"Entscheidungen über Menschen, Geld, Gesundheit oder Recht", st4s:"Einstellungen, Noten, Freigaben, Beratung",
+      start:"Die fünf Fragen starten",
+      homeNote:"ClearAI ist ein studentischer Prototyp. Sagen Sie uns, was wir verbessern sollen – auch schon vor dem Ausprobieren.",
+      pushWho:"ClearAI hakt nach", reasonLabel:"Ihre Begründung", optional:"(optional)", reasonPh:"Es in Worte zu fassen, ist schon die halbe Übung.",
+      back:"Zurück", next:"Nächste Frage", seeRating:"Zur Bewertung",
+      overall:"Gesamtrisiko", meta:(s,st)=>`Punktzahl ${s.replace(".",",")}, gewichtet für ${st}.`,
+      calloutText:"Wie hat diese Prüfung für Sie funktioniert? Ein paar kurze Fragen helfen uns, ClearAI zu verbessern.", calloutBtn:"Zu den Feedback-Fragen",
+      breakdown:"Aufschlüsselung", redFlags:"Warnsignale", beforeYouGo:"Bevor Sie loslegen",
+      noGaps:"Keine Lücken markiert. Führen Sie die Prüfung erneut durch, wenn sich Aufgabe, Daten oder Tool ändern.",
+      summaryTitle:"Ihre Zusammenfassung", copySummary:"Zusammenfassung kopieren", copied:"Kopiert", copyBlocked:"Kopieren vom Browser blockiert", restart:"Weiteren Plan prüfen",
+      flagA:"Sensible oder unbekannte Daten bei schwacher oder fehlender Prüfung.",
+      flagB:"Das Ergebnis fließt ohne solide Prüfung in Entscheidungen über Menschen, Geld, Gesundheit oder Recht ein.",
+      flagC:"Fehler wären schwer zu erkennen, und niemand prüft.",
+      flagD:"Niemand ist für das Ergebnis verantwortlich.",
+      flagE:"Entscheidung mit hoher Tragweite, unklare Verantwortung und riskanter Umgang mit Daten.",
+      flagDK:"Sie haben „Weiß ich nicht“ oder „Nicht darüber nachgedacht“ angegeben bei: ",
+      sumHead:"CLEARAI – KI-PLAN-PRÜFUNG", sumPlan:"Plan", sumUse:"Ergebnis genutzt für", sumRisk:"Gesamtrisiko", sumScore:"Punktzahl", sumReason:"Begründung", sumFlags:"Warnsignale",
+      sumFoot:"Selbsteinschätzung, keine Compliance-Prüfung. Erstellt mit einem Prototyp, der mit KI-Unterstützung entwickelt wurde.",
+      aboutH1:"So funktioniert die Bewertung",
+      about1:"Jeder der fünf Bereiche wird von 0 (geringes Risiko) bis 3 (hohes Risiko) bewertet. „Weiß ich nicht“ ergibt 3, denn Nichtwissen ist selbst das Risiko.",
+      about2:"Die Summe (0–15) wird danach gewichtet, wo das Ergebnis landet: von ×0,8 für persönliche Nutzung bis ×1,4 für Entscheidungen über Menschen, Geld, Gesundheit oder Recht.",
+      about3:"Stufen: unter 4 Niedrig, unter 8 Mittel, unter 11 Hoch, ab 11 Kritisch.",
+      about4:"Warnsignal-Regeln haben Vorrang vor der Summe. Sensible Daten ohne Prüfung sind zum Beispiel mindestens Hoch, egal wie gut der Rest aussieht.",
+      aboutH2:"Bekannte Grenzen",
+      about5:"Bewertet werden Ihre eigenen Antworten. Optimistische Antworten ergeben optimistische Bewertungen.",
+      about6:"Die Kontexthinweise beruhen auf einfacher Stichwortsuche. Sie können Dinge übersehen oder zu oft anschlagen.",
+      about7:"Es ist eine Denkübung, keine Compliance- oder Rechtsprüfung (zum Beispiel nach DSGVO oder EU AI Act).",
+      aboutH3:"Datenschutz",
+      about8:"Die Prüfung läuft vollständig in Ihrem Browser. Während Sie antworten, wird nichts gespeichert oder gesendet.",
+      about9:"Wenn Sie nach einer Prüfung Feedback senden, speichert das ClearAI-Team Ihre Planbeschreibung, Ihre Antworten auf die fünf Fragen und Ihr Feedback, um den Prototyp auszuwerten. Nur das Team kann sie sehen.",
+      about10:"Ihre E-Mail-Adresse ist freiwillig. Wir nutzen sie nur für Rückfragen zu Ihrem Feedback.",
+      foot1:"ClearAI-Prototyp v0.6. Eine Denkhilfe, keine Compliance-Prüfung.", foot2:"Erstellt mit KI-Unterstützung (Claude Opus 5.5).",
+      fbTitle:"Helfen Sie uns, ClearAI zu verbessern", fbSub:"Kurze Antworten genügen. Alle Fragen sind freiwillig.",
+      secYou:"Über Sie", secCheck:"Zu dieser Prüfung", secClear:"Zu ClearAI", secContact:"Kontakt",
+      f_role:"Was ist Ihre aktuelle Rolle?", choose:"Bitte wählen…",
+      roles:["Schüler/in","Auszubildende/r","Student/in (Hochschule)","Berufstätig (angestellt)","Berufstätig (selbstständig)"],
+      f_role_description:"Beschreiben Sie Ihre Rolle in wenigen Worten", ph_role_description:"z. B. BWL-Student an der FH Münster",
+      f_plan_change:"Hat das Feedback Ihren Plan verändert? Wenn ja, wie?", ph_plan_change:"z. B. Ich lasse den Entwurf jetzt erst gegenlesen.",
+      f_perception:"Wie haben Sie das Feedback empfunden?", ph_perception:"z. B. hilfreich, unnötig, zu streng, zu nachsichtig",
+      f_implementation:"Würden Sie das Feedback umsetzen? Was und wie?", ph_implementation:"z. B. Kundennamen vor dem Einfügen entfernen",
+      f_used_reasoning:"Haben Sie das Feld „Ihre Begründung“ genutzt, um Ihre Antworten zu erklären?", yes:"Ja", no:"Nein",
+      f_reasoning_usage:"Wie haben Sie es genutzt?", ph_reasoning_usage:"z. B. um meine Wahl kurz zu begründen",
+      f_ease_rating:"Wie einfach war ClearAI zu bedienen?", easeLow:"1 = sehr schwer", easeHigh:"10 = sehr einfach",
+      f_use_again:"Würden Sie ClearAI wieder nutzen?", ph_use_again:"z. B. ja, vor jedem neuen KI-Projekt",
+      f_recommend:"Würden Sie ClearAI empfehlen? Wenn ja, wem?", ph_recommend:"z. B. meiner Teamleitung",
+      f_missing:"Was fehlt Ihnen in ClearAI?", ph_missing:"z. B. Fragen speziell für mein Fachgebiet",
+      f_inspiration:"Haben Sie Ideen für weitere Funktionen?", ph_inspiration:"z. B. eine Erinnerung, den Plan später erneut zu prüfen",
+      f_willing_to_pay:"Für welche Funktion würden Sie bezahlen?", ph_willing_to_pay:"z. B. eine Version, die auf die KI-Richtlinie meines Unternehmens zugeschnitten ist",
+      f_email:"E-Mail-Adresse (optional)", ph_email:"name@beispiel.de",
+      emailHint:"Nur falls wir Ihnen Rückfragen stellen dürfen. Wir nutzen sie für nichts anderes.",
+      fbNoteCheck:"Bitte keine vertraulichen Details angeben. Ihr Plan und Ihre Antworten auf die fünf Fragen werden mit dem Feedback gespeichert.",
+      fbNoteGeneral:"Bitte keine vertraulichen Details angeben.",
+      send:"Feedback senden", sending:"Wird gesendet…", sentTitle:"Feedback gesendet", sentText:"Danke. Es geht direkt an das Team hinter ClearAI.", close:"Schließen",
+      emailErr:"Prüfen Sie die E-Mail-Adresse oder lassen Sie das Feld leer.",
+      sendErr:m=>`Feedback wurde nicht gesendet: ${m}. Prüfen Sie Ihre Verbindung und versuchen Sie es erneut.`
+    }
+  };
+
   const FEEDBACK_ENDPOINT = "https://clearai-feedback-api.clearai-alpha.workers.dev/api/feedback";
+  const HEALTH_ENDPOINT = "https://clearai-feedback-api.clearai-alpha.workers.dev/healthz";
+  const SCORE_COLORS = ["var(--low)","var(--mod)","var(--high)","var(--crit)"];
+  const TEXT_MAX = 300;
 
-  let idx=0, answers=[], reasons=[], planText="", stakes=2, lastResult=null;
+  /* ---------- State & helpers ---------- */
+  let lang = "en", idx=0, answers=[], reasons=[], planText="", stakes=2, lastResult=null;
   const $=id=>document.getElementById(id);
+  const t=k=>T[lang][k];
   const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const store={ get(k){try{return sessionStorage.getItem(k)}catch(e){return null}}, set(k,v){try{sessionStorage.setItem(k,v)}catch(e){}} };
 
-  /* Tabs */
+  /* ---------- Feedback form ---------- */
+  const TEXT_FIELDS = ["role_description","plan_change","perception","implementation","reasoning_usage","use_again","recommend","missing","inspiration","willing_to_pay"];
+  function textField(p,id){
+    return `<label class="field" for="${p}-${id}" data-t="f_${id}"></label><input type="text" id="${p}-${id}" name="${id}" maxlength="${TEXT_MAX}" autocomplete="off" data-t-ph="ph_${id}">`;
+  }
+  function buildForm(p, withCheck){
+    const scale = Array.from({length:10},(_,i)=>`<label><input type="radio" name="${p}-ease" value="${i+1}" aria-label="${i+1} / 10"><span>${i+1}</span></label>`).join("");
+    return `
+      <div id="${p}-form">
+        <h2 id="${p}-title" data-t="fbTitle"></h2>
+        <p class="sub" data-t="fbSub"></p>
+        <div class="fb-sec">
+          <h3 data-t="secYou"></h3>
+          <label class="field" for="${p}-role" data-t="f_role"></label>
+          <select id="${p}-role" name="role">
+            <option value="" data-t="choose"></option>
+            ${ROLES.map((r,i)=>`<option value="${esc(r)}" data-t-role="${i}"></option>`).join("")}
+          </select>
+          ${textField(p,"role_description")}
+        </div>
+        ${withCheck?`
+        <div class="fb-sec">
+          <h3 data-t="secCheck"></h3>
+          ${textField(p,"plan_change")}
+          ${textField(p,"perception")}
+          ${textField(p,"implementation")}
+          <label class="field" for="${p}-used_reasoning" data-t="f_used_reasoning"></label>
+          <select id="${p}-used_reasoning" name="used_reasoning">
+            <option value="" data-t="choose"></option><option value="Yes" data-t="yes"></option><option value="No" data-t="no"></option>
+          </select>
+          <div class="hidden" id="${p}-reasoning-wrap">${textField(p,"reasoning_usage")}</div>
+        </div>`:""}
+        <div class="fb-sec">
+          <h3 data-t="secClear"></h3>
+          <p class="field" style="font-weight:600; margin:16px 0 6px" id="${p}-ease-label" data-t="f_ease_rating"></p>
+          <div class="scale" role="radiogroup" aria-labelledby="${p}-ease-label">${scale}</div>
+          <div class="scale-ends"><span data-t="easeLow"></span><span data-t="easeHigh"></span></div>
+          ${textField(p,"use_again")}
+          ${textField(p,"recommend")}
+          ${textField(p,"missing")}
+          ${textField(p,"inspiration")}
+          ${textField(p,"willing_to_pay")}
+        </div>
+        <div class="fb-sec">
+          <h3 data-t="secContact"></h3>
+          <label class="field" for="${p}-email" data-t="f_email"></label>
+          <input type="email" id="${p}-email" name="email" maxlength="254" autocomplete="email" data-t-ph="ph_email">
+          <p class="hint" data-t="emailHint"></p>
+          <p class="field-err hidden" id="${p}-emailErr" data-t="emailErr"></p>
+        </div>
+        <p class="hint" style="margin-top:22px" data-t="${withCheck?"fbNoteCheck":"fbNoteGeneral"}"></p>
+        <div class="actions"><button class="btn btn-primary" id="${p}-send" type="button" disabled data-t="send"></button></div>
+        <p class="status hidden" id="${p}-status" role="status"></p>
+      </div>
+      <div class="fb-done hidden" id="${p}-done">
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="11" fill="#18212C"/><path d="M6.5 11.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><h2 style="font-size:1.2rem" data-t="sentTitle"></h2><p class="sub" style="margin:0" data-t="sentText"></p>
+        ${p==="d"?`<button class="btn btn-quiet" type="button" id="d-doneClose" style="margin-top:16px" data-t="close"></button>`:""}</div>
+      </div>`;
+  }
+  $("feedback-card").innerHTML = buildForm("r", true);
+  $("dialog-card").innerHTML = `<button class="x" type="button" id="dlgClose" aria-label="Close">×</button>` + buildForm("d", false);
+
+  function collect(p){
+    const v=id=>{ const el=$(`${p}-${id}`); return el?el.value.trim():""; };
+    const f={ role:v("role"), ease_rating:Number((document.querySelector(`input[name="${p}-ease"]:checked`)||{}).value)||null, email:v("email") };
+    TEXT_FIELDS.forEach(id=>f[id]=v(id));
+    f.used_reasoning=v("used_reasoning");
+    if(f.used_reasoning!=="Yes") f.reasoning_usage="";
+    return f;
+  }
+  const isFilled=f=>Object.values(f).some(x=>x!==""&&x!==null);
+  const emailOk=e=>!e||/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);
+
+  function wireForm(p, withCheck){
+    const root=$(`${p}-form`);
+    const sync=()=>{
+      $(`${p}-send`).disabled=!isFilled(collect(p));
+      const ur=$(`${p}-used_reasoning`); if(ur) $(`${p}-reasoning-wrap`).classList.toggle("hidden", ur.value!=="Yes");
+    };
+    root.addEventListener("input",sync); root.addEventListener("change",sync);
+    $(`${p}-email`).addEventListener("input",()=>$(`${p}-emailErr`).classList.add("hidden"));
+    $(`${p}-send`).onclick=async()=>{
+      const f=collect(p), b=$(`${p}-send`), st=$(`${p}-status`);
+      if(!emailOk(f.email)){ $(`${p}-emailErr`).classList.remove("hidden"); $(`${p}-email`).focus(); return; }
+      b.disabled=true; b.textContent=t("sending"); st.className="status hidden";
+      try{
+        await sendFeedback(f, withCheck);
+        root.classList.add("hidden"); $(`${p}-done`).classList.remove("hidden");
+        if(p==="d") $("d-doneClose").focus();
+      }catch(e){
+        st.textContent=T[lang].sendErr(e.message); st.className="status err"; b.disabled=false;
+      }
+      b.textContent=t("send");
+    };
+    return {
+      reset(){
+        root.classList.remove("hidden"); $(`${p}-done`).classList.add("hidden"); $(`${p}-status`).className="status hidden";
+        root.querySelectorAll("input").forEach(i=>{ if(i.type==="radio") i.checked=false; else i.value=""; });
+        root.querySelectorAll("select").forEach(s=>s.value="");
+        sync();
+      }
+    };
+  }
+  const resultForm=wireForm("r", true), dialogForm=wireForm("d", false);
+
+  /* ---------- Sending ---------- */
+  let workerVersion=null;
+  async function getWorkerVersion(){
+    if(workerVersion) return workerVersion;
+    try{ const j=await fetch(HEALTH_ENDPOINT,{cache:"no-store"}).then(r=>r.json()); workerVersion=Number(j.version)||1; }
+    catch(e){ workerVersion=1; }
+    return workerVersion;
+  }
+  function checkData(){
+    const r=lastResult; if(!r) return {};
+    const d={ plan:r.plan, stakes:r.stakes, risk_level:r.riskLevel, score:r.score, flags_count:r.flagsCount,
+      data_score:r.scores.data, errors_score:r.scores.errors, check_score:r.scores.check, accountability_score:r.scores.account, loss_score:r.scores.loss };
+    const col={data:"data",errors:"errors",check:"check",account:"accountability",loss:"loss"};
+    DIMENSIONS.forEach((dim,i)=>{ d[col[dim.key]+"_answer"]=dim.en.opts[r.answers[i]][0]; d[col[dim.key]+"_reasoning"]=(r.reasons[i]||"").slice(0,1000); });
+    return d;
+  }
+  // Older Worker versions only know the original columns. For them, the new answers go
+  // into the "comment" column as labelled lines, so nothing is lost before the Worker update.
+  function legacyComment(f, d){
+    const L=[["email",f.email],["language",lang],["role",f.role],["role_description",f.role_description],
+      ["plan_change",f.plan_change],["perception",f.perception],["implementation",f.implementation],
+      ["used_reasoning",f.used_reasoning],["reasoning_usage",f.reasoning_usage],["ease_rating",f.ease_rating],
+      ["use_again",f.use_again],["recommend",f.recommend],["missing",f.missing],["inspiration",f.inspiration],["willing_to_pay",f.willing_to_pay]];
+    ["data","errors","check","accountability","loss"].forEach(k=>{ if(d[k+"_answer"]) L.push([k+"_answer",d[k+"_answer"]]); });
+    ["data","errors","check","accountability","loss"].forEach(k=>{ if(d[k+"_reasoning"]) L.push([k+"_reasoning",d[k+"_reasoning"]]); });
+    return L.filter(x=>x[1]!==""&&x[1]!==null&&x[1]!==undefined).map(([k,v])=>`${k}: ${v}`).join(" | ").slice(0,1800);
+  }
+  async function sendFeedback(f, withCheck){
+    const d=withCheck?checkData():{};
+    const v=await getWorkerVersion();
+    const body = v>=2
+      ? Object.assign({ form_version:2, timestamp:new Date().toISOString(), language:lang }, d, f)
+      : Object.assign({ timestamp:new Date().toISOString(), plan:d.plan||"", stakes:d.stakes||"", risk_level:d.risk_level||"", score:d.score??null,
+          data_score:d.data_score??null, errors_score:d.errors_score??null, check_score:d.check_score??null, accountability_score:d.accountability_score??null,
+          loss_score:d.loss_score??null, flags_count:d.flags_count??null, plan_changed:"", helpfulness_rating:null, comment:legacyComment(f,d) });
+    const res=await fetch(FEEDBACK_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(data.error||`HTTP ${res.status}`);
+  }
+
+  /* ---------- Language ---------- */
+  function applyLang(l){
+    lang=l; document.documentElement.lang=l;
+    document.querySelectorAll("[data-t]").forEach(el=>{ const v=T[l][el.dataset.t]; if(typeof v==="string") el.textContent=v; });
+    document.querySelectorAll("[data-t-ph]").forEach(el=>el.placeholder=T[l][el.dataset.tPh]);
+    document.querySelectorAll("[data-t-role]").forEach(el=>el.textContent=T[l].roles[+el.dataset.tRole]);
+    $("langSwitch").textContent=T[l].switchTo;
+    $("langSwitch").setAttribute("lang", l==="en"?"de":"en");
+    document.title = l==="de" ? "ClearAI – KI-Plan prüfen" : "ClearAI – Check your AI plan";
+    if(!$("step-q").classList.contains("hidden")) renderQ();
+    if(!$("step-result").classList.contains("hidden")) renderResult();
+  }
+  function chooseLang(l){ store.set("clearai-lang",l); applyLang(l); }
+  $("langSwitch").onclick=()=>chooseLang(lang==="en"?"de":"en");
+  const langDlg=$("langDialog");
+  langDlg.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{ chooseLang(b.dataset.lang); langDlg.close(); });
+  langDlg.addEventListener("cancel",()=>chooseLang(lang));
+
+  /* ---------- Tabs ---------- */
   const tabs=document.querySelectorAll(".nav button");
-  tabs.forEach(t=>t.onclick=()=>{
-    tabs.forEach(x=>x.setAttribute("aria-selected", x===t));
-    ["check","prompt","about"].forEach(n=>$("tab-"+n).classList.toggle("hidden",n!==t.dataset.tab));
+  tabs.forEach(tb=>tb.onclick=()=>{
+    tabs.forEach(x=>x.setAttribute("aria-selected", x===tb));
+    ["check","about"].forEach(n=>$("tab-"+n).classList.toggle("hidden",n!==tb.dataset.tab));
   });
 
-  /* Step 1 */
+  /* ---------- Step 1 ---------- */
   $("start").onclick=()=>{
     planText=$("plan").value.trim();
     if(planText.length<20){ $("planErr").classList.remove("hidden"); $("plan").focus(); return; }
     $("planErr").classList.add("hidden");
     stakes=+document.querySelector('input[name=stakes]:checked').value; idx=0; answers=[]; reasons=[];
-    $("step-intro").classList.add("hidden"); $("homeNote").classList.add("hidden"); $("step-q").classList.remove("hidden"); document.body.classList.add("in-check");
-    renderQ();
-    $("step-q").scrollIntoView({block:"start"});
+    $("step-intro").classList.add("hidden"); $("homeNote").classList.add("hidden"); $("step-q").classList.remove("hidden");
+    document.body.classList.add("in-check");
+    renderQ(); window.scrollTo(0,0);
   };
   $("plan").addEventListener("input",()=>{ if($("plan").value.trim().length>=20) $("planErr").classList.add("hidden"); });
 
-  /* Step 2 */
+  /* ---------- Step 2 ---------- */
   function renderQ(){
-    const d=DIMENSIONS[idx];
-    $("steps").innerHTML=DIMENSIONS.map((x,i)=>`<li class="${i<idx?"done":i===idx?"now":""}"${i===idx?' aria-current="step"':""}>${i+1}<span> ${esc(x.label)}</span></li>`).join("");
-    $("qtext").textContent=d.q;
-    $("qcontext").innerHTML=d.kw[0].test(planText)?`<p class="context">${esc(d.kw[1])}</p>`:"";
-    $("qopts").innerHTML=d.opts.map((o,i)=>`<label class="choice"><input type="radio" name="opt" value="${i}" ${answers[idx]===i?"checked":""}><span>${esc(o[0])}</span></label>`).join("");
+    const d=DIMENSIONS[idx], L=d[lang];
+    $("steps").innerHTML=DIMENSIONS.map((x,i)=>`<li class="${i<idx?"done":i===idx?"now":""}"${i===idx?' aria-current="step"':""}>${i+1}<span> ${esc(x[lang].label)}</span></li>`).join("");
+    $("qtext").textContent=L.q;
+    $("qcontext").innerHTML=d.kw.test(planText)?`<p class="context">${esc(L.hint)}</p>`:"";
+    $("qopts").innerHTML=L.opts.map((o,i)=>`<label class="choice"><input type="radio" name="opt" value="${i}" ${answers[idx]===i?"checked":""}><span>${esc(o[0])}</span></label>`).join("");
     $("reason").value=reasons[idx]||"";
     $("back").style.visibility=idx===0?"hidden":"visible";
-    $("next").textContent=idx===DIMENSIONS.length-1?"See my rating":"Next question";
+    $("next").textContent=idx===DIMENSIONS.length-1?t("seeRating"):t("next");
     showPush();
     document.querySelectorAll('input[name=opt]').forEach(r=>r.onchange=()=>{answers[idx]=+r.value;showPush();});
   }
@@ -471,167 +784,83 @@
     const a=answers[idx];
     $("next").disabled=a===undefined;
     $("pushback").classList.toggle("hidden",a===undefined);
-    if(a!==undefined) $("pushtext").textContent=DIMENSIONS[idx].opts[a][2];
+    if(a!==undefined) $("pushtext").textContent=DIMENSIONS[idx][lang].opts[a][1];
   }
-  $("next").onclick=()=>{reasons[idx]=$("reason").value.trim(); if(idx<DIMENSIONS.length-1){idx++;renderQ();$("step-q").scrollIntoView({block:"start"});}else showResult();};
-  $("back").onclick=()=>{reasons[idx]=$("reason").value.trim(); idx--; renderQ();};
+  $("reason").addEventListener("input",()=>reasons[idx]=$("reason").value.trim());
+  $("next").onclick=()=>{ if(idx<DIMENSIONS.length-1){idx++;renderQ();window.scrollTo(0,0);} else showResult(); };
+  $("back").onclick=()=>{ idx--; renderQ(); };
 
-  /* Step 3 */
+  /* ---------- Step 3 ---------- */
   function showResult(){
-    const s=DIMENSIONS.map((d,i)=>d.opts[answers[i]][1]);
+    const s=DIMENSIONS.map((d,i)=>d.scores[answers[i]]);
     const sc=Object.fromEntries(DIMENSIONS.map((d,i)=>[d.key,s[i]]));
-    const raw=s.reduce((a,b)=>a+b,0);
-    let score=raw*STAKES[stakes].f;
+    const score=s.reduce((a,b)=>a+b,0)*STAKES[stakes].f;
     let lvlIdx=LEVELS.findIndex(l=>score<l.max);
     const flags=[];
-    const floor=(min,msg)=>{flags.push(msg); if(lvlIdx<min) lvlIdx=min;};
-    if(sc.data===3&&sc.check>=2) floor(2,"Sensitive or unknown data combined with weak or no review.");
-    if(stakes===4&&sc.check>=2) floor(2,"Output feeds decisions about people, money, health or law without solid review.");
-    if(sc.errors===3&&sc.check===3) floor(2,"Errors would be hard to detect, and nobody checks.");
-    if(sc.account===3) floor(1,"No one is accountable for the result.");
-    if(stakes===4&&sc.account>=2&&sc.data>=2) floor(3,"High-stakes decision, unclear owner, and risky data handling.");
-    const dk=DIMENSIONS.filter((d,i)=>d.opts[answers[i]][0].startsWith("I don’t know")||d.opts[answers[i]][0].startsWith("I haven’t")).map(d=>d.label);
-    if(dk.length) flags.push("You answered “don’t know” or “haven’t thought about it” for: "+dk.join(", ")+".");
-    const L=LEVELS[lvlIdx];
-
-    lastResult={timestamp:new Date().toISOString(), plan:planText, stakes:STAKES[stakes].t, score:score.toFixed(1), riskLevel:L.name, scores:sc, flagsCount:flags.length};
-
+    const floor=(min,key)=>{flags.push(key); if(lvlIdx<min) lvlIdx=min;};
+    if(sc.data===3&&sc.check>=2) floor(2,"flagA");
+    if(stakes===4&&sc.check>=2) floor(2,"flagB");
+    if(sc.errors===3&&sc.check===3) floor(2,"flagC");
+    if(sc.account===3) floor(1,"flagD");
+    if(stakes===4&&sc.account>=2&&sc.data>=2) floor(3,"flagE");
+    const dk=DIMENSIONS.map((d,i)=>/^I (don’t know|haven’t)/.test(d.en.opts[answers[i]][0])?i:-1).filter(i=>i>=0);
+    lastResult={ timestamp:new Date().toISOString(), plan:planText, stakes:STAKES[stakes].t, stakesKey:stakes, score:score.toFixed(1),
+      lvlIdx, riskLevel:LEVELS[lvlIdx].name, scores:sc, s, flags, dk, flagsCount:flags.length+(dk.length?1:0),
+      answers:answers.slice(), reasons:reasons.slice() };
     $("step-q").classList.add("hidden"); $("step-result").classList.remove("hidden");
-    $("verdict").style.setProperty("--lvl",L.color);
-    $("ratingLvl").textContent=L.name;
-    $("ratingSub").textContent=L.sub;
-    $("ratingMeta").textContent=`Score ${score.toFixed(1)}, weighted for ${STAKES[stakes].t}.`;
-    $("bars").innerHTML=DIMENSIONS.map((d,i)=>`<div class="bar-row"><span>${esc(d.label)}</span><div class="bar" role="img" aria-label="${esc(d.label)}: ${s[i]} of 3"><div style="width:${Math.max(s[i]/3*100,4)}%;background:${SCORE_COLORS[s[i]]}"></div></div><span class="v">${s[i]}/3</span></div>`).join("");
-    $("flagsCard").classList.toggle("hidden",!flags.length);
-    $("flags").innerHTML=flags.map(f=>`<li>${esc(f)}</li>`).join("");
-    const acts=DIMENSIONS.map((d,i)=>[s[i],d]).filter(x=>x[0]>=1).sort((a,b)=>b[0]-a[0]);
-    $("actions").innerHTML=acts.length?acts.map(([v,d])=>`<li><b>${esc(d.label)}:</b> ${esc(d.fix)}</li>`).join(""):"<li>No gaps flagged. Run the check again if the task, the data or the tool changes.</li>";
-
-    $("summary").textContent=
-`CLEARAI – AI PLAN CHECK
-Plan: ${planText}
-Output used for: ${STAKES[stakes].t}
-Overall risk: ${L.name} (score ${score.toFixed(1)})
-
-${DIMENSIONS.map((d,i)=>`${d.label} [${s[i]}/3]: ${d.opts[answers[i]][0]}${reasons[i]?"\n  Reasoning: "+reasons[i]:""}`).join("\n")}
-${flags.length?"\nRed flags:\n- "+flags.join("\n- "):""}
-
-Self-assessment, not a compliance review. Generated with a prototype built with AI assistance.`;
-    resetResultFeedback();
+    resultForm.reset();
+    renderResult();
     window.scrollTo(0,0);
+  }
+  function renderResult(){
+    const r=lastResult, L=LEVELS[r.lvlIdx], stTxt=STAKES[r.stakesKey][lang];
+    const flagTexts=r.flags.map(k=>t(k)).concat(r.dk.length?[t("flagDK")+r.dk.map(i=>DIMENSIONS[i][lang].label).join(", ")+"."]:[]);
+    $("verdict").style.setProperty("--lvl",L.color);
+    $("ratingLvl").textContent=L[lang][0];
+    $("ratingSub").textContent=L[lang][1];
+    $("ratingMeta").textContent=T[lang].meta(r.score, stTxt);
+    $("bars").innerHTML=DIMENSIONS.map((d,i)=>`<div class="bar-row"><span>${esc(d[lang].label)}</span><div class="bar" role="img" aria-label="${esc(d[lang].label)}: ${r.s[i]} / 3"><div style="width:${Math.max(r.s[i]/3*100,4)}%;background:${SCORE_COLORS[r.s[i]]}"></div></div><span class="v">${r.s[i]}/3</span></div>`).join("");
+    $("flagsCard").classList.toggle("hidden",!flagTexts.length);
+    $("flags").innerHTML=flagTexts.map(f=>`<li>${esc(f)}</li>`).join("");
+    const acts=DIMENSIONS.map((d,i)=>[r.s[i],d]).filter(x=>x[0]>=1).sort((a,b)=>b[0]-a[0]);
+    $("actions").innerHTML=acts.length?acts.map(([v,d])=>`<li><b>${esc(d[lang].label)}:</b> ${esc(d[lang].fix)}</li>`).join(""):`<li>${esc(t("noGaps"))}</li>`;
+    $("summary").textContent=
+`${t("sumHead")}
+${t("sumPlan")}: ${r.plan}
+${t("sumUse")}: ${stTxt}
+${t("sumRisk")}: ${L[lang][0]} (${t("sumScore")} ${r.score})
+
+${DIMENSIONS.map((d,i)=>`${d[lang].label} [${r.s[i]}/3]: ${d[lang].opts[r.answers[i]][0]}${r.reasons[i]?`\n  ${t("sumReason")}: `+r.reasons[i]:""}`).join("\n")}
+${flagTexts.length?`\n${t("sumFlags")}:\n- `+flagTexts.join("\n- "):""}
+
+${t("sumFoot")}`;
   }
 
   $("restart").onclick=()=>{ $("step-result").classList.add("hidden"); $("step-intro").classList.remove("hidden"); $("homeNote").classList.remove("hidden"); document.body.classList.remove("in-check"); window.scrollTo(0,0); };
-  function copy(text,btn){ navigator.clipboard.writeText(text).then(()=>{const o=btn.textContent;btn.textContent="Copied";setTimeout(()=>btn.textContent=o,1500);}).catch(()=>{btn.textContent="Copy blocked by browser";}); }
+  function copy(text,btn){ navigator.clipboard.writeText(text).then(()=>{btn.textContent=t("copied");setTimeout(()=>btn.textContent=t("copySummary"),1500);}).catch(()=>{btn.textContent=t("copyBlocked");}); }
   $("copySummary").onclick=e=>copy($("summary").textContent,e.currentTarget);
-  $("copyPrompt").onclick=e=>copy($("sysprompt").textContent,e.currentTarget);
+  $("calloutBtn").onclick=()=>{ $("feedback-card").scrollIntoView({block:"start"}); setTimeout(()=>$("r-role").focus({preventScroll:true}),400); };
 
-  /* Feedback */
-  function buildScale(el,name){
-    el.innerHTML=[1,2,3,4,5].map(n=>`<label><input type="radio" name="${name}" value="${n}" aria-label="${n} of 5"><span>${n}</span></label>`).join("");
-  }
-  buildScale($("fbHelp"),"fbHelp"); buildScale($("dlgHelp"),"dlgHelp");
-  const val=name=>(document.querySelector(`input[name=${name}]:checked`)||{}).value||"";
-
-  function payload(extra){
-    const r=lastResult||{}, sc=r.scores||{};
-    return Object.assign({
-      timestamp:r.timestamp||new Date().toISOString(), plan:r.plan||"", stakes:r.stakes||"", risk_level:r.riskLevel||"",
-      score:r.score??null, data_score:sc.data??null, errors_score:sc.errors??null, check_score:sc.check??null,
-      accountability_score:sc.account??null, loss_score:sc.loss??null, flags_count:r.flagsCount??null,
-      plan_changed:"", helpfulness_rating:null, comment:""
-    },extra);
-  }
-  async function send(body){
-    const res=await fetch(FEEDBACK_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
-    const data=await res.json().catch(()=>({}));
-    if(!res.ok) throw new Error(data.error||`the server answered ${res.status}`);
-  }
-  function status(el,msg){ el.textContent=msg; el.className="status err"; }
-
-  // Result panel
-  const resultFields=()=>({plan_changed:val("fbChanged"), helpfulness_rating:Number(val("fbHelp"))||null, comment:$("fbComment").value.trim()});
-  const syncFb=()=>{ const f=resultFields(); $("submitFb").disabled=!(f.plan_changed||f.helpfulness_rating||f.comment); };
-  $("feedback-card").addEventListener("input",syncFb); $("feedback-card").addEventListener("change",syncFb);
-  function resetResultFeedback(){
-    $("fbForm").classList.remove("hidden"); $("fbDone").classList.add("hidden"); $("fbStatus").className="status hidden";
-    document.querySelectorAll('#feedback-card input').forEach(i=>i.checked=false); $("fbComment").value="";
-    $("submitFb").textContent="Send feedback"; syncFb();
-  }
-  $("submitFb").onclick=async()=>{
-    const b=$("submitFb"); b.disabled=true; b.textContent="Sending…";
-    try{ await send(payload(resultFields())); $("fbForm").classList.add("hidden"); $("fbDone").classList.remove("hidden"); }
-    catch(e){ status($("fbStatus"),"Feedback was not sent: "+e.message+". Check your connection and try again, or download a copy."); b.disabled=false; b.textContent="Send feedback"; }
-  };
-  $("downloadCsv").onclick=()=>{
-    const p=payload(resultFields());
-    const cols=["timestamp","plan","stakes","risk_level","score","data_score","errors_score","check_score","accountability_score","loss_score","flags_count","plan_changed","helpfulness_rating","comment"];
-    const cell=v=>`"${String(v??"").replace(/[\r\n]+/g," ").replace(/"/g,'""')}"`;
-    const blob=new Blob([cols.join(",")+"\n"+cols.map(c=>cell(p[c])).join(",")+"\n"],{type:"text/csv;charset=utf-8;"});
-    const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`clearai-feedback-${new Date().toISOString().slice(0,10)}.csv`; a.click();
-  };
-
-  // Dialog (available everywhere)
-  const dlg=$("fbDialog");
-  const syncDlg=()=>{ $("dlgSubmit").disabled=!(val("dlgHelp")||$("dlgComment").value.trim()); };
-  dlg.addEventListener("input",syncDlg); dlg.addEventListener("change",syncDlg);
+  /* ---------- Feedback entry points ---------- */
+  const fbDlg=$("fbDialog");
   function openFeedback(){
-    if(!$("step-result").classList.contains("hidden") && !$("fbForm").classList.contains("hidden")){
-      $("feedback-card").scrollIntoView({block:"start"}); return;
+    if(!$("step-result").classList.contains("hidden") && !$("r-form").classList.contains("hidden")){
+      $("calloutBtn").click(); return;
     }
-    $("dlgForm").classList.remove("hidden"); $("dlgDone").classList.add("hidden"); $("dlgStatus").className="status hidden";
-    dlg.showModal(); $("dlgComment").focus();
+    dialogForm.reset(); fbDlg.showModal();
   }
   $("fbTrigger").onclick=openFeedback;
   document.querySelectorAll("[data-open-feedback]").forEach(b=>b.onclick=openFeedback);
-  $("dlgClose").onclick=()=>dlg.close(); $("dlgDoneClose").onclick=()=>dlg.close();
-  dlg.addEventListener("click",e=>{ if(e.target===dlg) dlg.close(); });
-  $("dlgSubmit").onclick=async()=>{
-    const b=$("dlgSubmit"); b.disabled=true; b.textContent="Sending…";
-    try{
-      await send(payload({helpfulness_rating:Number(val("dlgHelp"))||null, comment:$("dlgComment").value.trim()}));
-      $("dlgForm").classList.add("hidden"); $("dlgDone").classList.remove("hidden");
-      $("dlgComment").value=""; document.querySelectorAll('#dlgHelp input').forEach(i=>i.checked=false); $("dlgDoneClose").focus();
-    }catch(e){ status($("dlgStatus"),"Feedback was not sent: "+e.message+". Check your connection and try again."); b.disabled=false; }
-    b.textContent="Send feedback"; syncDlg();
-  };
+  $("dlgClose").onclick=()=>fbDlg.close();
+  $("d-doneClose").onclick=()=>fbDlg.close();
+  fbDlg.addEventListener("click",e=>{ if(e.target===fbDlg) fbDlg.close(); });
 
-  $("sysprompt").textContent=
-`ROLE
-You are "ClearAI": an experienced, sceptical but friendly co-worker. The user describes how they plan to use AI for a task. Your job is to make them think critically before they start.
-
-PROCESS
-1. If the description is vague (no tool, no inputs, no destination of output), ask ONE clarifying question first.
-2. Ask exactly five tough questions, ONE AT A TIME. Wait for the answer before the next. Tailor each to the user’s specific plan; never ask generically.
-   Q1 Data — What exactly goes into the tool? Personal, confidential, or third-party data? Is the tool approved?
-   Q2 Errors — Assume the output is confidently wrong in one place. How would they notice? What happens if they don’t?
-   Q3 Who checks — Who reviews before use, against what, and are they competent to disagree?
-   Q4 Accountability — Whose name is on the result? Could they explain it without saying “the AI said so”?
-   Q5 What you’d lose — Which skill, judgment, learning or relationship erodes if AI does this?
-3. After each answer, give ONE short pushback sentence if the answer is vague, optimistic or assumes something unchecked. If the answer is solid, say so in a few words and move on. Treat “I don’t know” as a risk.
-4. After Q5, give the assessment.
-
-SCORING
-Score each dimension 0 (low risk) to 3 (high risk). Weight the total by stakes: personal ×0.8, internal ×1.0, external ×1.2, decisions about people/money/health/law ×1.4.
-Bands: <4 Low, <8 Moderate, <11 High, ≥11 Critical.
-Overrides (minimum level regardless of score):
-- Sensitive/unknown data AND weak or no review → at least High.
-- High-stakes decisions AND weak review → at least High.
-- No accountable person → at least Moderate.
-
-OUTPUT FORMAT (after Q5)
-- Overall risk: [Level] — one-sentence reason.
-- Table: Dimension | Score 0–3 | Why (max 12 words).
-- Red flags (if any).
-- Top 3 concrete actions before starting, most important first.
-- One question the user should ask someone else (e.g. data-protection contact, supervisor).
-
-RULES
-- Never do the task itself. Only assess the plan.
-- Don’t lecture, moralise or use motivational language.
-- Don’t invent laws or policies. If regulation may apply (e.g. GDPR, EU AI Act, company policy), say “check with [role]” rather than giving legal conclusions.
-- Remind the user once, at the start, not to paste real confidential data into this chat — describing it is enough.
-- Language: reply in the user’s language.`;
+  /* ---------- Start ---------- */
+  const urlLang=new URLSearchParams(location.search).get("lang");
+  const saved=store.get("clearai-lang");
+  const chosen=["en","de"].includes(urlLang)?urlLang:["en","de"].includes(saved)?saved:null;
+  applyLang(chosen || ((navigator.language||"").toLowerCase().startsWith("de")?"de":"en"));
+  if(!chosen) langDlg.showModal();
   </script>
 </body>
 </html>

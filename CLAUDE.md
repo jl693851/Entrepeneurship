@@ -75,3 +75,4 @@ A **custom GPT (or a pasted system prompt) that plays a critical colleague.**
 | 2026-11-10 | critical-colleague_v0.1.html | First prototype |
 | 2026-11-11 | CLAUDE.md | Context file created |
 | 2026-11-13 | index.html (v0.2) | Minimalist redesign of the ClearAI site; feedback made prominent (header button on every screen, feedback panel directly under the verdict, general-feedback dialog). v0.1 kept as `history/index_v0.1.html`. |
+| 2026-11-13 | index.html (v0.6) | New feedback form (role, short text questions, ease 1–10, optional email; plan and the five answers saved with feedback), English/German with a language prompt on each visit, prompt tab removed, own CSV download removed. Needs the updated Cloudflare Worker (v2) for separate CSV columns; until then answers are stored in the comment column. |
