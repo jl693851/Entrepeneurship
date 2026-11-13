@@ -1,0 +1,8 @@
+name = "clearai-feedback-worker"
+main = "worker.js"
+compatibility_date = "2025-07-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "clearai-feedback"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"

@@ -23,7 +23,7 @@
     .brand-text{font-size:1.15rem}
     .badge{font-size:.78rem; border:1px solid var(--line); background:rgba(255,255,255,.02); color:var(--muted); padding:7px 10px; border-radius:999px}
     .hero{padding:30px 0 12px}
-    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid rgba(115,215,255,.25);background:rgba(115,215,255,.08);color:var(--brand);font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid rgba(115,215,255,.25);background:rgba(115,215,255,.08);color:var(--brand);font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
     h1{font-size:clamp(2.4rem,5vw,4rem); line-height:1.02; margin:18px 0 18px; letter-spacing:-.06em}
     h1 .accent{background:linear-gradient(135deg,var(--brand),#d0f5ff 40%, #a78bfa 100%); -webkit-background-clip:text; background-clip:text; color:transparent}
     .subtitle{max-width:700px; color:var(--muted); font-size:1.08rem; margin:0}
@@ -31,27 +31,27 @@
     .tab{border:1px solid var(--line); background:rgba(255,255,255,.02); color:var(--ink); padding:10px 16px; border-radius:999px; cursor:pointer; font:inherit; font-weight:600; transition:.2s ease}
     .tab:hover{border-color:rgba(115,215,255,.45)}
     .tab.active{background:linear-gradient(135deg, rgba(115,215,255,.14), rgba(139,92,246,.12)); border-color:rgba(115,215,255,.5); box-shadow:0 18px 35px rgba(18,29,47,.45)}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)); border:1px solid var(--line); border-radius:18px; padding:22px; margin-bottom:16px; box-shadow:0 18px 40px rgba(2,8,16,.26)}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01)); border:1px solid var(--line); border-radius:18px; padding:22px; margin-bottom:16px; box-shadow:0 18px 40px rgba(8,17,29,.38)}
     h2{font-size:1.15rem; margin:0 0 12px; letter-spacing:-.03em}
     label{font-weight:700; display:block; margin:14px 0 8px; color:#dfeeff}
-    textarea,select,input[type="text"],input[type="password"]{width:100%; font:inherit; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:rgba(13,26,43,.8); color:var(--ink); outline:none; transition:border-color .2s ease, box-shadow .2s ease}
+    textarea,select,input[type="text"],input[type="password"]{width:100%; font:inherit; padding:12px 14px; border:1px solid var(--line); border-radius:12px; background:rgba(13,26,43,.8); color:var(--ink)}
     textarea:focus,select:focus,input:focus{border-color:rgba(115,215,255,.58); box-shadow:0 0 0 4px rgba(115,215,255,.08)}
     textarea{min-height:110px; resize:vertical}
     .hint{font-size:.9rem; color:var(--muted); margin-top:6px}
-    button.primary{background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#06111d; border:0; padding:12px 18px; border-radius:12px; font:inherit; font-weight:800; cursor:pointer; margin-top:16px; box-shadow:0 18px 30px rgba(115,215,255,.28)}
-    button.ghost{background:rgba(255,255,255,.02); border:1px solid var(--line); color:var(--ink); padding:10px 14px; border-radius:12px; font:inherit; font-weight:700; cursor:pointer; margin-top:16px; margin-right:10px}
+    button.primary{background:linear-gradient(135deg, var(--brand), var(--brand-2)); color:#06111d; border:0; padding:12px 18px; border-radius:12px; font:inherit; font-weight:800; cursor:pointer; transition:.2s ease}
+    button.ghost{background:rgba(255,255,255,.02); border:1px solid var(--line); color:var(--ink); padding:10px 14px; border-radius:12px; font:inherit; font-weight:700; cursor:pointer; margin-top:8px}
     button:disabled{opacity:.45; cursor:not-allowed}
     .progress{height:8px; background:rgba(255,255,255,.06); border-radius:999px; overflow:hidden; margin-bottom:16px}
     .progress div{height:100%; background:linear-gradient(90deg,var(--brand),var(--brand-2)); transition:width .3s ease}
     .qnum{font-size:.8rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; font-weight:700}
     .question{font-size:1.25rem; font-weight:700; margin:8px 0 10px; letter-spacing:-.03em}
     .context{background:rgba(115,215,255,.08); border-left:3px solid var(--brand); padding:10px 12px; border-radius:8px; font-size:.95rem; margin:8px 0; color:#dfeeff}
-    .opt{display:flex; gap:12px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin:9px 0; cursor:pointer; font-weight:500; background:rgba(255,255,255,.01)}
+    .opt{display:flex; gap:12px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin:9px 0; cursor:pointer; font-weight:500; background:rgba(255,255,255,.02)}
     .opt:hover{border-color:rgba(115,215,255,.55)}
     .opt input{margin-top:4px}
     .pushback{display:none; background:rgba(245,158,11,.08); border-left:3px solid var(--warning); padding:10px 12px; border-radius:8px; margin-top:12px; font-size:.96rem; color:#f4d294}
     .pushback b{display:block; margin-bottom:2px}
-    .rating{text-align:center; padding:18px 20px; border-radius:16px; color:#fff; margin-bottom:18px; background:linear-gradient(135deg, var(--brand-2), var(--brand)); box-shadow:0 20px 38px rgba(115,215,255,.2)}
+    .rating{text-align:center; padding:18px 20px; border-radius:16px; color:#fff; margin-bottom:18px; background:linear-gradient(135deg, var(--brand-2), var(--brand)); box-shadow:0 20px 38px rgba(18,29,47,.45)}
     .rating .lvl{font-size:1.8rem; font-weight:900; letter-spacing:-.04em}
     .bar-row{display:grid; grid-template-columns:120px 1fr 36px; gap:12px; align-items:center; margin:10px 0; font-size:.95rem}
     .bar{height:12px; background:rgba(255,255,255,.06); border-radius:999px; overflow:hidden}
@@ -134,7 +134,7 @@
 
         <div class="card" id="feedback-card">
           <h2>Prototype feedback</h2>
-          <p class="hint">Help improve ClearAI. Your feedback is saved directly to <code>feedback.csv</code> in the repository, or downloaded locally as CSV.</p>
+          <p class="hint">Help improve ClearAI. Your feedback is sent to the Cloudflare feedback endpoint and can be exported centrally for your team.</p>
 
           <div class="fb-grid">
             <div>
@@ -162,31 +162,13 @@
           <textarea id="fbComment" style="min-height:80px" placeholder="e.g. Question 2 made me realize I don't verify citations, or the rating felt too strict..."></textarea>
 
           <details class="gh-cfg">
-            <summary>GitHub repo connection</summary>
-            <div class="hint" style="margin-bottom:8px">Enter your repository details once, stored locally in your browser. Never commit a personal access token into public code.</div>
-            <div class="fb-grid">
-              <div>
-                <label for="ghOwner">GitHub owner / username</label>
-                <input type="text" id="ghOwner" placeholder="e.g. janlippinghof">
-              </div>
-              <div>
-                <label for="ghRepo">Repository name</label>
-                <input type="text" id="ghRepo" placeholder="e.g. entrepreneurship">
-              </div>
-            </div>
-            <div class="fb-grid">
-              <div>
-                <label for="ghPath">CSV file path in repo</label>
-                <input type="text" id="ghPath" value="feedback.csv">
-              </div>
-              <div>
-                <label for="ghToken">Fine-grained GitHub token</label>
-                <input type="password" id="ghToken" placeholder="github_pat_...">
-              </div>
-            </div>
+            <summary>Cloudflare feedback endpoint</summary>
+            <div class="hint" style="margin-bottom:8px">This form sends data directly to your Cloudflare Worker instead of requiring a GitHub token.</div>
+            <label for="workerUrl">Worker URL</label>
+            <input type="text" id="workerUrl" value="https://clearaiproject.clearai-alpha.workers.dev/api/feedback" placeholder="https://your-worker.example.workers.dev/api/feedback">
           </details>
 
-          <button class="primary" id="submitFb">Save feedback to GitHub</button>
+          <button class="primary" id="submitFb">Save feedback to Cloudflare</button>
           <button class="ghost" id="downloadCsv">Download CSV row locally</button>
           <div class="status-msg" id="fbStatus"></div>
         </div>
@@ -196,7 +178,7 @@
     <section id="tab-prompt" class="hidden">
       <div class="card">
         <h2>System prompt for a custom GPT / Claude project</h2>
-        <p class="hint">Paste this into the instructions field. The LLM version asks follow-up questions in free text and adapts to your answers; this page uses fixed questions with transparent rules instead.</p>
+        <p class="hint">Paste this into the instructions field. The LLM version asks follow-up questions in free text and adapts to your answers; this page uses fixed questions with transparent reasoning.</p>
         <pre id="sysprompt"></pre>
         <button class="primary" id="copyPrompt">Copy prompt</button>
       </div>
@@ -232,9 +214,9 @@
           "Your description mentions content that likely contains personal or confidential data. Check whether the tool you use is approved and what it does with inputs."],
       opts:[
         ["Only public or self-written, non-sensitive content",0,"Fine — but check again in six months. Inputs tend to creep from ‘harmless’ to ‘just this once, the real file’."],
-        ["Internal information, in a company-approved tool with a data agreement",1,"Do you know what the agreement actually covers — training on your data, retention, where it’s stored? ‘Approved’ is often assumed, not checked."],
-        ["Internal or confidential information, in a tool I haven’t checked",2,"Then you are making a data-protection decision on behalf of your organisation without the information to make it. Who should have approved that?"],
-        ["Personal data about people (customers, staff, applicants) or confidential data, in an unapproved tool",3,"This is the scenario most data-protection incidents start with. Could you anonymise the input, or use an approved tool instead?"],
+        ["Internal information, in a company-approved tool with a data agreement",1,"Do you know what the agreement actually covers — training on your data, retention, where it’s stored? ‘Approved’ is not the same as ‘safe’."],
+        ["Internal or confidential information, in a tool I haven’t checked",2,"Then you are making a data-protection decision on behalf of your organisation without the information to make it."],
+        ["Personal data about people (customers, staff, applicants) or confidential data, in an unapproved tool",3,"This is the scenario most data-protection incidents start with. Could you anonymise or restrict it first?"],
         ["I don’t know",3,"Not knowing what you put in is the problem. Find out before the first upload, not after."]
       ],
       fix:"Strip names and identifiers before input, or switch to an approved tool. Ask your data-protection contact one specific question: ‘May I put X into tool Y?’"
@@ -395,7 +377,7 @@ Self-assessment, not a compliance review. Generated with a prototype built with 
   }
 
   $("restart").onclick=()=>{ $("step-result").classList.add("hidden"); $("step-intro").classList.remove("hidden"); window.scrollTo(0,0); };
-  function copy(text,btn){ navigator.clipboard.writeText(text).then(()=>{const o=btn.textContent;btn.textContent="Copied ✓";setTimeout(()=>btn.textContent=o,1500);}).catch(()=>alert("Copy failed — select the text manually.")); }
+  function copy(text,btn){ navigator.clipboard.writeText(text).then(()=>{const o=btn.textContent;btn.textContent="Copied ✓";setTimeout(()=>btn.textContent=o,1500);}).catch(()=>alert("Copy failed — your browser blocked clipboard access.")); }
   $("copySummary").onclick=e=>copy($("summary").textContent,e.target);
   $("copyPrompt").onclick=e=>copy($("sysprompt").textContent,e.target);
 
@@ -427,15 +409,28 @@ Self-assessment, not a compliance review. Generated with a prototype built with 
     ].map(csvEscape).join(",");
   }
 
-  (function initGhConfig(){
-    const params = new URLSearchParams(window.location.search);
-    ["owner","repo","path","token"].forEach(k=>{
-      const el = $("gh" + k[0].toUpperCase() + k.slice(1));
-      const saved = params.get("gh_" + k) || localStorage.getItem("cc_gh_" + k);
-      if(saved) el.value = saved;
-      el.addEventListener("change", ()=> localStorage.setItem("cc_gh_" + k, el.value.trim()));
-    });
-  })();
+  function buildFeedbackPayload(){
+    const r = lastResult || {};
+    const sc = r.scores || {};
+    return {
+      timestamp: r.timestamp || new Date().toISOString(),
+      plan: r.plan || "",
+      stakes: r.stakes || "",
+      risk_level: r.riskLevel || "",
+      score: r.score ?? null,
+      data_score: sc.data ?? null,
+      errors_score: sc.errors ?? null,
+      check_score: sc.check ?? null,
+      accountability_score: sc.account ?? null,
+      loss_score: sc.loss ?? null,
+      flags_count: r.flagsCount ?? null,
+      plan_changed: $("fbChanged").value,
+      helpfulness_rating: Number($("fbHelp").value) || null,
+      comment: $("fbComment").value.trim()
+    };
+  }
+
+  const FEEDBACK_ENDPOINT = "https://clearaiproject.clearai-alpha.workers.dev/api/feedback";
 
   function setFbStatus(msg, ok){
     const el = $("fbStatus");
@@ -453,84 +448,38 @@ Self-assessment, not a compliance review. Generated with a prototype built with 
   };
 
   $("submitFb").onclick=async ()=>{
-    const owner = $("ghOwner").value.trim();
-    const repo = $("ghRepo").value.trim();
-    const path = $("ghPath").value.trim() || "feedback.csv";
-    const token = $("ghToken").value.trim();
-
-    if(!owner || !repo || !token){
-      document.querySelector("details.gh-cfg").open = true;
-      setFbStatus("Please fill in GitHub owner, repository name, and token in the repo connection section above, or use Download CSV row locally.", false);
+    const endpoint = $("workerUrl").value.trim() || FEEDBACK_ENDPOINT;
+    if(!endpoint){
+      setFbStatus("Please set a Cloudflare Worker URL for feedback submission.", false);
       return;
     }
 
-    localStorage.setItem("cc_gh_owner", owner);
-    localStorage.setItem("cc_gh_repo", repo);
-    localStorage.setItem("cc_gh_path", path);
-    localStorage.setItem("cc_gh_token", token);
-
     const btn = $("submitFb");
     btn.disabled = true;
-    btn.textContent = "Saving to GitHub...";
-
-    const apiUrl = `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${path.split("/").map(encodeURIComponent).join("/")}`;
-    const headers = {
-      "Authorization": `Bearer ${token}`,
-      "Accept": "application/vnd.github+json",
-      "Content-Type": "application/json"
-    };
+    btn.textContent = "Saving to Cloudflare...";
 
     try {
-      let existingContent = "";
-      let sha = null;
-
-      const getRes = await fetch(apiUrl, {headers});
-      if(getRes.ok){
-        const fileData = await getRes.json();
-        sha = fileData.sha;
-        const binStr = atob(fileData.content.replace(/\n|\r/g, ""));
-        const bytes = Uint8Array.from(binStr, c => c.charCodeAt(0));
-        existingContent = new TextDecoder().decode(bytes);
-      } else if(getRes.status !== 404){
-        const err = await getRes.json().catch(()=>({}));
-        throw new Error(err.message || `GitHub GET failed (${getRes.status})`);
-      }
-
-      const row = buildCsvRow();
-      let updatedCsv = existingContent.trim()
-        ? existingContent.trimEnd() + "\n" + row + "\n"
-        : CSV_HEADER + "\n" + row + "\n";
-
-      const utf8Bytes = new TextEncoder().encode(updatedCsv);
-      let bin = "";
-      utf8Bytes.forEach(b => bin += String.fromCharCode(b));
-      const encodedContent = btoa(bin);
-
-      const body = {
-        message: `Add test feedback (${new Date().toISOString().slice(0,16)})`,
-        content: encodedContent
-      };
-      if(sha) body.sha = sha;
-
-      const putRes = await fetch(apiUrl, {
-        method: "PUT",
-        headers,
-        body: JSON.stringify(body)
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(buildFeedbackPayload())
       });
 
-      if(!putRes.ok){
-        const err = await putRes.json().catch(()=>({}));
-        throw new Error(err.message || `GitHub PUT failed (${putRes.status})`);
+      const data = await response.json().catch(()=>({}));
+      if(!response.ok){
+        throw new Error(data.error || `Worker request failed (${response.status})`);
       }
 
-      setFbStatus(`Saved! Feedback appended to ${owner}/${repo}/${path}.`, true);
+      setFbStatus("Saved! Feedback was sent to the Cloudflare worker.", true);
       btn.textContent = "Feedback saved ✓";
     } catch(e){
-      setFbStatus("Could not save to GitHub: " + e.message, false);
+      setFbStatus("Could not save to Cloudflare: " + e.message, false);
       btn.disabled = false;
-      btn.textContent = "Save feedback to GitHub";
+      btn.textContent = "Save feedback to Cloudflare";
     }
   };
+
+  $("workerUrl").value = FEEDBACK_ENDPOINT;
 
   $("sysprompt").textContent=
 `ROLE
@@ -544,7 +493,7 @@ PROCESS
    Q3 Who checks — Who reviews before use, against what, and are they competent to disagree?
    Q4 Accountability — Whose name is on the result? Could they explain it without saying “the AI said so”?
    Q5 What you’d lose — Which skill, judgment, learning or relationship erodes if AI does this?
-3. After each answer, give ONE short pushback sentence if the answer is vague, optimistic or assumes something unchecked. If the answer is solid, say so in a few words and move on. Treat “I don’t know” as a high-risk answer, without judgment.
+3. After each answer, give ONE short pushback sentence if the answer is vague, optimistic or assumes something unchecked. If the answer is solid, say so in a few words and move on. Treat “I don’t know” as a risk.
 4. After Q5, give the assessment.
 
 SCORING
