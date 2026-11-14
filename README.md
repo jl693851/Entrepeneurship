@@ -1,4 +1,4 @@
-# ClearAI Feedback: Cloudflare setup (no local terminal required)
+# ClearAI Feedback: Cloudflare setup (no local terminal required) https://clearaiproject.clearai-alpha.workers.dev/
 
 The `cloudflare-feedback-worker` branch contains the Worker, D1 schema, and form integration. It accepts public form submissions without a GitHub token. The feedback list and CSV export require a team secret.
 
